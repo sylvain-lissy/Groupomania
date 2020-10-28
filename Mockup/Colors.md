@@ -1,20 +1,24 @@
-# Charte des couleurs pour l'application Groupomania Social Network
+##### Charte des couleurs pour l'application Groupomania Social Network
 
-## Couleur principale
+###### Couleur principale
 - La couleur bleue foncée :
-- HEX #123456
-- RGB 123 456 789
+- Deep Dark Blue Ocean
+- HEX #091F43
+- RGB 9 31 67
 
-## Couleur secondaire
-- La couleur gris moyen :
-- HEX #123456
-- RGB 123 456 789
+###### Couleur secondaire
+- La couleur gris clair :
+- Snowfall gray
+- HEX #D4D4D4
+- RGB 212 212 212
 
-## Couleurs tertiaire
-- La couleur rouge :
-- HEX #123456
-- RGB 123 456 789
+###### Couleurs tertiaire
+- La couleur rose :
+- Pinky Dark 
+- HEX #D1515A
+- RGB 209 81 90
 
 - La couleur blanche :
-- HEX #123456
-- RGB 123 456 789
+- Ghost white
+- HEX #F8F8FF
+- RGB 243 243 255
