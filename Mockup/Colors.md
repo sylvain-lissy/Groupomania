@@ -1,5 +1,5 @@
 # Charte des couleurs pour l'application Groupomania Social Network
-===
+
 ## Couleur principale
 - La couleur bleue foncée :
 - HEX #123456
