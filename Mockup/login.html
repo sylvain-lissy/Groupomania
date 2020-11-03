@@ -10,7 +10,7 @@
     <title>[MOCKUP] Groupomania Social Network</title>
 </head>
 
-<body>
+<body class="text-center">
     <div style="background-color: #091F43;">
         <div class="container">
             <div class="row">
@@ -33,16 +33,27 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <div class="jumbotron jumbotron-fluid m-0 py-10" style="background-image:url(images/background.png); height:500px">
-                    <div class="py-4" style="background-color: ghostwhite;opacity: .8;">
-                        <h1 class="text-center h3" style="color:#091F43;">Bienvenu sur le RS<span style="color:#D1515A">i</span> de Groupomania !</h1>
-                        <h2 class="text-center h5" style="color:#091F43;"><a href="login.html" style="color:#D1515A">Connectez-vous</a> et venez découvrir vos collègues ou échanger avec eux.</h2>
-                        <h2 class="text-center h5" style="color:#091F43;">Si vous n'avez pas encore de compte, <a href="signup.html" style="color:#D1515A">inscrivez-vous</a> !</h2></div>
-                    </div>
+                <div class="jumbotron jumbotron-fluid m-0 py-4" style="background-color:#D4D4D4;">
+                    <h1 class="text-center h3" style="color:#091F43;">Bienvenu sur le RS<span style="color:#D1515A">i</span> de Groupomania !</h1>
+                    <h2 class="text-center h5" style="color:#091F43;">Pour vous connectez, c'est facile.</h2>
+                    <h2 class="text-center h5" style="color:#091F43;">On valide le formulaire et hop !</h2>
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-6 offset-3 py-5">
+                <form class="form-login">
+                    <label for="inputEmail" class="sr-only">Adress e-mail</label>
+                    <input type="email" id="inputEmail" class="form-control m-1" placeholder="Adresse e-mail" required>
+                    <label for="inputPassword" class="sr-only">Mot de passe</label>
+                    <input type="password" id="inputPassword" class="form-control m-1" placeholder="Mot de passe" required>
+                    <button class="btn btn-primary btn-block m-1" style="background-color:#D1515A" type="submit">Se connecter au RSi</button>
+                </form>
+                <p>Si vous n'avez pas encore de compte, rendez-vous sur la <a href="signup.html" style="color:#D1515A">page d'inscription</a></p>
+            </div>
+        </div>
     </div>
+        
     <!-- FOOTER -->
     <div class="container">
         <div style="background-color: #091F43;">
