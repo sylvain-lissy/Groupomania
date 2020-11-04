@@ -9,13 +9,13 @@
                         <div class="card-header bg-light">
                             <ul class="nav nav-tabs card-header-tabs justify-content-center">
                               <li class="nav-item">
-                                <a class="nav-link" href="index.html">Accueil</a>
+                                <a class="nav-link" href="#">Accueil</a>
                               </li>
                               <li class="nav-item">
-                                <a class="nav-link" href="blogin.html">Connexion</a>
+                                <a class="nav-link" href="#/login">Connexion</a>
                               </li>
                               <li class="nav-item">
-                                <a class="nav-link active" href="bsignup.html">Inscription</a>
+                                <a class="nav-link active" href="#/signup">Inscription</a>
                               </li>
                             </ul>
                         </div>
@@ -37,7 +37,7 @@
                             </form>
                         </div>
                         <div class="card-footer bg-light">
-                            <span class="text-dark">Déjà un compte ? <a href="blogin.html">Connectez-vous</a> !</span>
+                            <span class="text-dark">Déjà un compte ? <a href="#/login">Connectez-vous</a> !</span>
                         </div>
                     </div>
                 </div>

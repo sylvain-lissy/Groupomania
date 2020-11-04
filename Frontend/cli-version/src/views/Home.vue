@@ -9,21 +9,20 @@
                         <div class="card-header bg-light">
                             <ul class="nav nav-tabs card-header-tabs justify-content-center">
                               <li class="nav-item">
-                                <a class="nav-link active" href="index.html">Accueil</a>
+                                <a class="nav-link active" href="#">Accueil</a>
                               </li>
                               <li class="nav-item">
-                                <a class="nav-link" href="blogin.html">Connexion</a>
+                                <a class="nav-link" href="#/login">Connexion</a>
                               </li>
                               <li class="nav-item">
-                                <a class="nav-link" href="bsignup.html">Inscription</a>
+                                <a class="nav-link" href="#/signup">Inscription</a>
                               </li>
                             </ul>
                         </div>
                         <div class="card-body">
-                            <p class="h6 text-left" style="color:#091F43;">Ce site est dédié à tout le personnel de la société Groupomania.</p>
-                            <p class="h6 text-left" style="color:#091F43;">Venez échangez, discutez, découvrir vos collègues dans un cadre moins informel.</p>
-                            <p class="h6 text-left" style="color:#091F43;">Pour cela rien de plus simple, rejoignez-nous !</p>
-                            <p class="h6 text-left" style="color:#091F43;">Bonne navigation !</p>
+                            <p class="text-dark">Moderne et ludique, il permet aux employés de se connaître dans un cadre plus informel.</p>
+                            <a href="#/login" class="btn btn-primary btn-sm btn-block">Se connecter</a>
+                            <a href="#/signup" class="btn btn-primary btn-sm btn-block">S'inscrire</a>
                         </div>
                         <div class="card-footer bg-light d-flex justify-content-around ">
                             <span class="text-dark">© 2020 Groupomania </span>

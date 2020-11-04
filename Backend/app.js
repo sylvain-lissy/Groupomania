@@ -40,7 +40,7 @@ db.sequelize.sync();
 // enregistrement des routeurs
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/auth', authRoutes);
-app.use('/api/users', auth, multer, userRoutes);
+app.use('/api/users', multer, userRoutes);
 app.use('/api/messages',  multer, messageRoutes);
 app.use('/api/comments',  commentRoutes);
 

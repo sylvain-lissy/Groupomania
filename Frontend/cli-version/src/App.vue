@@ -1,11 +1,14 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <!-- <div id="nav">
       <router-link to="/">Index</router-link> |
       <router-link to="/login">Connexion</router-link> |
-      <router-link to="/signup">Inscription</router-link>
+      <router-link to="/signup">Inscription</router-link> |
+      <router-link to="/loggedIn">Accueil</router-link> |
+      <router-link to="/account">Compte</router-link> |
+      <router-link to="/messages">Messages</router-link> 
     </div>
-    <hr>
+    <hr>-->
     <router-view/>
   </div>
 </template>
@@ -26,7 +29,9 @@
   a {
     font-weight: bold;
     color: ghostwhite;
-
+    &:hover {
+      color: #D1515A;
+    }
     &.router-link-exact-active {
       color: #D1515A;
     }
