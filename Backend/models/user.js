@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     user_password: DataTypes.STRING,
     user_role: DataTypes.INTEGER,
     user_dateInscription: DataTypes.DATEONLY,
+    user_avatar: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'User',

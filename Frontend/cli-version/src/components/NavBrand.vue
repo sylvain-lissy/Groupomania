@@ -1,0 +1,11 @@
+<template>
+    <a class="navbar-brand" href="#">
+        <img src="../assets/logo_white.svg" alt="logo groupomania" height="37" class="m-0 p-0"/>
+    </a>
+</template>
+
+<script>
+export default {
+  name: 'NavBrand'
+}
+</script>

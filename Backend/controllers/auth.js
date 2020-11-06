@@ -17,7 +17,7 @@ exports.signup = (req, res, next) => {
             user_name: req.body.user_name,
             user_email: req.body.user_email,
             user_password: hash,
-            user_role:3,
+            //user_role:3,
             user_dateInscription: Date.now()
         })
         // Sauvegarde dans la base de données
@@ -46,6 +46,8 @@ exports.login = (req, res, next) => {
             res.status(200).json({
                 message: 'Utilisateur connecté !',
                 userId: user.id,
+                userName : user.user_name,
+                userAvatar : user.user_avatar,
                 // Création d'un token pour sécuriser le compte de l'utilisateur
                 token: jwt.sign(
                     { userId: user.id },

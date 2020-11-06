@@ -4,15 +4,18 @@ const Message = models.messages;
 const User = models.users
 
 const fs = require('fs');
+const { join } = require("path");
+const message = require("../models/message");
 
 // logique métier : lire tous messages
 exports.findAllMessages = (req, res, next) => {
-  Message.findAll({order: [
-    ['id', 'DESC'],
-]})
+  const messageInfo = {}
+  Message.findAll({order: [['id', 'DESC'],]} )
   .then(messages => {
-      console.log(messages);
-      res.status(200).json({data: messages});
+        messageInfo.date = message.message_date
+        messageInfo.msg = message.message_content
+        messageInfo.img = message.message_image
+      res.status(200).json({messageInfo});
   })
   .catch(error => res.status(400).json({ error }));
 };

@@ -1,6 +1,8 @@
 // imports
 const db = require("../models");
 const User = db.users;
+const Message = db.messages;
+const Comment = db.comments;
 
 const fs = require('fs');
 
@@ -16,11 +18,29 @@ exports.findAllUsers = (req, res, next) => {
 
 // logique métier : lire un utilisateur par son id
 exports.findOneUser = (req, res, next) => {
-  
+const userInfo = {}
+
   User.findOne({ where: {id: req.params.id} })
   .then(user => {
-    res.status(200).json(user)
+    userInfo.name = user.user_name
+    userInfo.mail = user.user_email
+    userInfo.date = user.user_dateInscription
   })
+  .then(() => {
+    Comment.count({ where: {comment_user: req.params.id} })
+    .then(commentCount => {
+      userInfo.cmtcount = commentCount
+    })
+  })
+  .then(() => {
+    Message.count({ where: {message_user: req.params.id} })
+    .then(messageCount => {
+      userInfo.msgcount = messageCount
+      res.status(200).json(userInfo)
+    })
+  })
+  
+  
   .catch(error => res.status(404).json({ error }));
 };
 
