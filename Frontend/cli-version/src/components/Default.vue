@@ -22,3 +22,9 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    Name: "Default"
+}
+</script>

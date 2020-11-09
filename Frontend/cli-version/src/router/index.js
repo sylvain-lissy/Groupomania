@@ -1,15 +1,15 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: () => import('../views/Home.vue')
+    {
+        path: '/',
+        name: 'Home',
+        component: () => import('../views/Home.vue'),
     },
     {
         path: '/connexion',
         name: 'Connexion',
-        component: () => import('../views/Connexion.vue')
+        component: () => import('../views/Connexion.vue'),
     },
     {
         path: '/inscription',
@@ -17,15 +17,15 @@ const routes = [
         component: () => import('../views/Inscription.vue')
     },
     {
-    path: '/messages',
-    name: 'Messages',
-    component: () => import('../views/Messages.vue')
+        path: '/messages',
+        name: 'Messages',
+        component: () => import('../views/Messages.vue')
     }
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
-  routes
+    history: createWebHashHistory(),
+    routes
 })
 
 router.beforeEach((to, from, next) => {
@@ -35,10 +35,10 @@ router.beforeEach((to, from, next) => {
     const loggedToken = localStorage.getItem('token');
   
     if (authRequired && !loggedIn && !loggedToken) {
-      return next('/connexion');
+        return next('/connexion');
     }
     next();
-  })
+})
 
 export default router
 

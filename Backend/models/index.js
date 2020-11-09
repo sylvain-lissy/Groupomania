@@ -2,7 +2,9 @@
 
 const fs = require('fs');
 const path = require('path');
+const { ForeignKeyConstraintError } = require('sequelize');
 const Sequelize = require('sequelize');
+const { PassThrough } = require('stream');
 const basename = path.basename(__filename);
 require('dotenv').config({ path: process.cwd() + '/.env' });
 const db = {};
@@ -32,5 +34,11 @@ db.Sequelize = Sequelize;
 db.users = require('./user.js')(sequelize, Sequelize);
 db.messages = require('./message.js')(sequelize, Sequelize);
 db.comments = require('./comment.js')(sequelize, Sequelize);
+
+db.comments.belongsTo(db.messages);
+db.messages.hasMany(db.comments);
+db.messages.belongsTo(db.users, {foreignKey: 'userID', otherKey:'id'});
+db.users.hasMany(db.messages);
+
 
 module.exports = db;

@@ -1,31 +1,73 @@
 //imports
+const db = require("../models");
 const models = require("../models");
 const Message = models.messages;
+const Comment = models.comments;
 const User = models.users
 
-const fs = require('fs');
-const { join } = require("path");
-const message = require("../models/message");
+//const fs = require('fs');
+//const { join } = require("path");
+//const message = require("../models/message");
 
 // logique métier : lire tous messages
 exports.findAllMessages = (req, res, next) => {
-  const messageInfo = {}
-  Message.findAll({order: [['id', 'DESC'],]} )
+  Message.findAll({
+    include: 
+      {
+        model: User,
+        required: true,
+        attributes:['user_name','user_avatar']
+      },
+    order:[['id','DESC']]
+    
+  })
   .then(messages => {
-        messageInfo.date = message.message_date
-        messageInfo.msg = message.message_content
-        messageInfo.img = message.message_image
-      res.status(200).json({messageInfo});
+      //console.log(messages)
+      const ListeMessages = messages.map(message => {
+        return Object.assign({},
+          {
+            msgId: message.id,
+            msgDate: message.message_date.split('-').reverse().join('/'),
+            msgTxt: message.message_content,
+            msgImg: message.message_image,
+            msgUID: message.userID,
+            msgUsr: message.User.user_name,
+            msgIcn: message.User.user_avatar
+          }
+        )
+      });
+      res.status(200).json({ListeMessages});
   })
   .catch(error => res.status(400).json({ error }));
 };
 
 // logique métier : lire un message par son id
 exports.findOneMessage = (req, res, next) => {
-  Message.findOne({ where: {id: req.params.id} })
+  const OnlyOneMessage = {}
+  Message.findOne({ 
+    where: {id: req.params.id},
+    include: {
+      model: User,
+      required: true,
+      attributes:['user_name','user_avatar'] 
+    }
+  })
   .then(message => {
-    console.log(message);
-    res.status(200).json(message)
+      OnlyOneMessage.id = message.id
+      OnlyOneMessage.userID = message.UserId
+      OnlyOneMessage.userAvatar = message.User.user_avatar
+      OnlyOneMessage.userName = message.User.user_name
+      OnlyOneMessage.date = message.message_date.split('-').reverse().join('/')
+      OnlyOneMessage.text = message.message_content
+      OnlyOneMessage.image = message.message_image
+  })
+  .then(() => {
+    Comment.count({ where: {comment_message: req.params.id} })
+    .then(commentCount => {
+      OnlyOneMessage.Commentaire = commentCount
+      res.status(200).json(OnlyOneMessage)
+
+    })
   })
   .catch(error => res.status(404).json({ error }));
 };
