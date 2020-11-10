@@ -1,25 +1,10 @@
 <template>
     <div>
-        <NavHeader></NavHeader>
-        
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8" id="allMessages">
-                    <a href="" class="my-2 btn btn-small btn-block btn-light text-dark">Poster un message...</a>
-                    <!-- <div class="card bg-light my-3">
-                        <div class="card-header bg-light d-flex align-items-center m-0 p-1">
-                            <img src="/images/avatars/default_user.jpg" height="40" class="m-0 rounded-circle"/>
-                            <span class="small text-dark m-0 p-1">Posté par "{{Msg_UserName }}", le {{Msg_Date}}</span>
-                        </div>
-                        <div class="card-body text-dark text-left">
-                            <p class="small">{{Msg_Text}}</p>
-                            <img src="../images/background.png" class="w-100"/>
-                        </div>
-                        <div class="card-footer bg-light text-dark text-left m-0">
-                                <a href="#/comments" class="h6 small">01 commentaire(s) +</a>
-                        </div>
-                    </div> -->
-                </div>           
+                    <a href="#" class="my-2 btn btn-small btn-block btn-light text-dark">Poster un message...</a>
+                </div>
             </div>
         </div>
     </div>
@@ -27,13 +12,9 @@
 
 <script>
 import axios from 'axios'
-import NavHeader from '../components/NavHeader'
 
 export default {
 	name: "Messages",
-	components: {
-		NavHeader
-    },
     created: function () {
         axios.get('http://127.0.0.1:3000/api/messages')
             .then(res => {
@@ -52,9 +33,7 @@ export default {
                             <img src="${rep[message].msgImg}" class="w-100"/>-->
                         </div>
                         <div class="card-footer bg-light text-dark text-left m-0">
-                            <a href="#/commentaires/${rep[message].msgId}" class="h6 small">Voir les commentaire(s)</a>
-
-                            
+                            <a href="#/commentaires/${rep[message].msgId}" class="h6 small">Voir les xx commentaire(s)</a>
                         </div>`
                     MessagesByCard.appendChild(OneCard)
                     if (!rep[message].msgTxt == null || !rep[message].msgTxt == '') {
@@ -72,7 +51,6 @@ export default {
                         MessageImage.appendChild(ImageContainer)
                     }
                 }
-                //console.log(res.data.ListeMessages)
             })
     }
 }

@@ -1,4 +1,3 @@
-
 <template>
     <div class="container">
         <div class="row">
@@ -15,24 +14,34 @@
 import NavBrand from "./NavBrand"
 import NavUserMenu from "./NavUserMenu"
 import NavDefault from "./NavDefault"
-import router from '../router'
+
+// import router from '../router'
 
 export default {
     name: 'NavHeader',
+    components: { 
+        NavUserMenu, 
+        NavDefault, 
+        NavBrand
+    },
+    data(){
+        return{
+            isOne : false
+        }
+    },
     computed:{
         isLogged(){
-            if (localStorage.getItem('token') !== null){
-                router.push('/messages')
+            if (localStorage.getItem('token') !== null){   
+                //router.push('/messages')
                 return true
             }
             return false
-
         }
-    },
-    components: {
-        NavBrand,
-        NavUserMenu,
-        NavDefault
     }
 }
 </script>
+<style>
+body {
+  background-color: #091F43;
+}
+</style>

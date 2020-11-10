@@ -1,34 +1,21 @@
 <template>
-  <div id="app">
-    <router-view/>
-  </div>
+    <div id="app">
+      <!--NAVBAR - SEE COMPONENT 'navBar.vue'-->
+      <NavHeader></NavHeader>
+
+      <!--ROUTER - SEE 'router/index.js'-->
+      <router-view></router-view>
+
+    </div>
 </template>
 
-// <style lang="scss">
-// #app {
-//   font-family: Avenir, Helvetica, Arial, sans-serif;
-//   -webkit-font-smoothing: antialiased;
-//   -moz-osx-font-smoothing: grayscale;
-//   text-align: center;
-//   color: ghostwhite;
-//   background-color: #091F43;
-// }
-
-// #nav {
-//   padding: 5px;
-
-//   a {
-//     font-weight: bold;
-//     color: ghostwhite;
-//     &:hover {
-//       color: #D1515A;
-//     }
-//     &.router-link-exact-active {
-//       color: #D1515A;
-//     }
-//   }
-// }
-// </style>
+<script>
+import NavHeader from './components/NavHeader'
+export default {
+  name: 'App',
+  components: {NavHeader}
+}
+</script>
 <style>
 body {
   background-color: #091F43;

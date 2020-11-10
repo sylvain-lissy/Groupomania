@@ -1,9 +1,10 @@
-const db = require("../models");
-const Comment = db.comments;
+const db = require("../models")
+const Comment = db.comments
+const Message = db.messages
 
 // logique métier : lire tous les commentaires
 exports.findAllComments = (req, res, next) => {
-  Comment.findAll()
+  Comment.findAll({ where: {MessageId: req.params.id} })
   .then(comments => {
       console.log(comments);
       res.status(200).json({data: comments});

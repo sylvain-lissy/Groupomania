@@ -62,11 +62,10 @@ exports.findOneMessage = (req, res, next) => {
       OnlyOneMessage.image = message.message_image
   })
   .then(() => {
-    Comment.count({ where: {comment_message: req.params.id} })
+    Comment.count({ where: {MessageId: req.params.id} })
     .then(commentCount => {
       OnlyOneMessage.Commentaire = commentCount
       res.status(200).json(OnlyOneMessage)
-
     })
   })
   .catch(error => res.status(404).json({ error }));

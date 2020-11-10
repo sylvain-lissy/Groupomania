@@ -7,9 +7,11 @@
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="my_account">
                 <p class="h5 dropdown-item-text">{{ userName}}</p>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#/account">Mon compte</a>
+                <router-link to="/compte" class="dropdown-item">Mon compte</router-link>
+                <!-- <a class="dropdown-item" href="#/compte">Mon compte</a> -->
                 <div class="dropdown-divider"></div>
                 <a class ="dropdown-item text-danger" @click="deconnexion" href="#">Déconnexion</a>
+                <!-- <a class ="dropdown-item text-danger" @click="deconnexion" href="#">Déconnexion</a> -->
             </div>
         </div>            
     </div>
@@ -22,7 +24,7 @@ export default {
     data(){
         return{
             userName:"", 
-            userAvatar:"/images/avatars/default_user.jpg"
+            userAvatar:"/images/avatars/default_user.jpg",
         }
     },
     created: function(){
@@ -32,7 +34,7 @@ export default {
     methods:{
         deconnexion:function(){
             localStorage.clear()
-            router.push('/') 
+            router.push('/')
         }
     }
 }
