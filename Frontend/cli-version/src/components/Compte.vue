@@ -16,7 +16,7 @@
                                 <div class="modal fade" id="modalAvatar" tabindex="-1" aria-labelledby="modalAvatar" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                            <form @submit.prevent="updateAvatar()">
+                                            <form @submit.prevent="updateAvatar()" enctype="multipart/form-data">
                                                 <div class="modal-header">
                                                     <p class="modal-title h5">Changer la photo de profile</p>
                                                 </div>
@@ -95,16 +95,15 @@ export default {
             this.file = this.$refs.file.files[0];
             this.newAvatar = URL.createObjectURL(this.file)
         },
-        async updateAvatar() {
-            //axios.post('http://127.0.0.1:3000/users/' + localStorage.getItem('UserId'), {avatar = ""})
+        updateAvatar() {
             let formData = new FormData()
-            formData.append('avatar', this.file);
-            console.log(formData.get('avatar'))
+            formData.append('image', this.file);
+            console.log(formData.get('image'))
             axios.put('http://127.0.0.1:3000/api/users/' + localStorage.getItem('userId'), 
                 formData, 
                 { 
                 headers:{
-                    'Content-Type': 'multipart/form-data',
+                    // 'Content-Type': 'multipart/form-data',
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }
             }).then(function(){
@@ -118,7 +117,7 @@ export default {
     created: function(){
         axios.get('http://127.0.0.1:3000/api/users/' + localStorage.getItem('userId'),{ headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
             .then(user => {
-                console.log(user)
+                //console.log(user)
                 this.userName = user.data.userName
                 this.email = user.data.email
                 this.role = user.data.role
