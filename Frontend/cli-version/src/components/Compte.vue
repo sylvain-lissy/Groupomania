@@ -32,7 +32,7 @@
                                                     <div class="col-12 justify-content-center">
                                                         <div class="form-group justify-content-center">
                                                             <label for="File" class="sr-only">Choisir une nouvelle photo</label>
-                                                            <input v-on:change="onFileChange()" type="file" ref="file" name="image" class="form-control-file" id="File" accept=".jpg, .jpeg, .gif, .png">
+                                                            <input @change="onFileChange()" type="file" ref="file" name="image" class="form-control-file" id="File" accept=".jpg, .jpeg, .gif, .png">
                                                         </div>
                                                     </div>
                                                 </div>
