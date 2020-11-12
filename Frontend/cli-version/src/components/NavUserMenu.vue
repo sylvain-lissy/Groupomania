@@ -2,7 +2,7 @@
     <div id="navbarContent" class="m-0 p-0 justify-content-end align-self-center">
         <div class="nav-item dropdown m-0 p-0">
             <a class="nav-item nav-link m-0 p-0" href="#" data-toggle="dropdown" id="my_account" aria-haspopup="true" aria-expanded="false">
-                <img :src="userAvatar" alt="Image de profile" height="37" class="my-0 rounded-circle"/>
+                <img :src="avatar" alt="Image de profile" height="37" class="my-0 rounded-circle"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="my_account">
                 <p class="h5 dropdown-item-text">{{ userName}}</p>
@@ -24,12 +24,12 @@ export default {
     data(){
         return{
             userName:"", 
-            userAvatar:"/images/avatars/default_user.jpg",
+            avatar:"/images/avatars/default_user.jpg",
         }
     },
     created: function(){
             this.userName = localStorage.getItem('userName') 
-            this.userAvatar = localStorage.getItem('userAvatar') 
+            this.avatar = localStorage.getItem('avatar') 
     },
     methods:{
         deconnexion:function(){

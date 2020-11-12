@@ -17,8 +17,9 @@ import axios from 'axios'
 export default {
 	name: "Messages",
     created: function () {
-        axios.get('http://127.0.0.1:3000/api/messages/' + this.$route.params.id)
+        axios.get('http://127.0.0.1:3000/api/messages/' + this.$route.params.id, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
             .then(res => {
+                console.log(res)
                 const rep = res.data
                 const MessagesByCard = document.getElementById("OneMessage")
                 const OneCard = document.createElement("div")
@@ -70,7 +71,7 @@ export default {
                     MessageCommentaire.appendChild(CommentaireContainer)
                 } 
             })
-        axios.get('http://127.0.0.1:3000/api/comments/messages/' + this.$route.params.id)
+        axios.get('http://127.0.0.1:3000/api/comments/messages/' + this.$route.params.id, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
             .then(cmt => {
                 const Comment = cmt.data.data
                 console.log(Comment)

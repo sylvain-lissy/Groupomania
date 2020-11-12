@@ -3,7 +3,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8" id="allMessages">
-                    <a href="#" class="my-2 btn btn-small btn-block btn-light text-dark">Poster un message...</a>
+                    <a href="#" class="my-2 btn btn-small btn-block btn-light text-dark disabled">Poster un message...</a>
                 </div>
             </div>
         </div>
@@ -16,8 +16,9 @@ import axios from 'axios'
 export default {
 	name: "Messages",
     created: function () {
-        axios.get('http://127.0.0.1:3000/api/messages')
+        axios.get('http://127.0.0.1:3000/api/messages',{ headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
             .then(res => {
+                console.log(res)
                 const rep = res.data.ListeMessages
                 for (const message in rep){
                     const MessagesByCard = document.getElementById("allMessages")
@@ -26,14 +27,14 @@ export default {
                     OneCard.innerHTML=
                         `<div class="card-header bg-light d-flex align-items-center m-0 p-1">
                             <img src="${rep[message].msgIcn}" height="40" class="m-0 rounded-circle"/>
-                            <span class="small text-dark m-0 p-1">Posté par "${rep[message].msgUsr}", le ${rep[message].msgDate}</span>
+                            <span class="small text-dark m-0 p-1">Posté par "${rep[message].msgUsr}", le ${rep[message].msgDate.slice(0,10).split('-').reverse().join('/') + ' à ' + rep[message].msgDate.slice(11,16)}</span>
                         </div>
                         <div class="card-body text-dark text-left" id="MessageContainer${rep[message].msgId}">
                             <!--<p class="small">${rep[message].msgTxt}</p>
                             <img src="${rep[message].msgImg}" class="w-100"/>-->
                         </div>
                         <div class="card-footer bg-light text-dark text-left m-0">
-                            <a href="#/commentaires/${rep[message].msgId}" class="h6 small">Voir les xx commentaire(s)</a>
+                            <a href="#/commentaires/${rep[message].msgId}" class="h6 small">Voir les commentaires</a>
                         </div>`
                     MessagesByCard.appendChild(OneCard)
                     if (!rep[message].msgTxt == null || !rep[message].msgTxt == '') {

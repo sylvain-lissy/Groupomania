@@ -22,21 +22,26 @@ const userInfo = {}
 
   User.findOne({ where: {id: req.params.id} })
   .then(user => {
-    userInfo.name = user.user_name
-    userInfo.mail = user.user_email
-    userInfo.date = user.user_dateInscription
-    userInfo.avatar = user.user_avatar
+    userInfo.userName = user.userName
+    userInfo.email = user.email
+    if (user.isAdmin === 1){
+      userInfo.role = "Utilisateur"
+    }else{
+      userInfo.role = "Administrateur"
+    }
+    userInfo.createdAt = user.createdAt
+    userInfo.avatar = user.avatar
   })
   .then(() => {
-    Comment.count({ where: {comment_user: req.params.id} })
-    .then(commentCount => {
-      userInfo.cmtcount = commentCount
+    Comment.count({ where: {userId: req.params.id} })
+    .then(cmtcount => {
+      userInfo.commentsCount = cmtcount
     })
   })
   .then(() => {
-    Message.count({ where: {userID: req.params.id} })
-    .then(messageCount => {
-      userInfo.msgcount = messageCount
+    Message.count({ where: {userId: req.params.id} })
+    .then(msgcount => {
+      userInfo.messagesCount = msgcount
       res.status(200).json(userInfo)
     })
   })
@@ -48,10 +53,10 @@ const userInfo = {}
 // logique métier : modifier un utilisateur
 exports.modifyUser = (req, res, next) => {
   // gestion d'ajout/modification image de profil
-  const userObject = req.body.imageUrl ?
+  const userObject = req.body.avatar ?
     {
-      ...req.body.user,
-      imageUrl: `${req.protocol}://${req.get('host')}/images/${req.body.imageUrl}`
+      ...req.body.userId,
+      avatar: `${req.body.avatar}`
     } : { ... req.body};
 
   User.update({ ...userObject, id:  req.params.id}, { where: {id: req.params.id} })

@@ -49,13 +49,14 @@
 
 <script>
 import axios from 'axios'
+import router from '../router'
 
 export default {
     name: "Inscription",
     data () {
         return {
           InputName:'',
-          InputEMail:'',
+          InputEmail:'',
           InputPassword:'',
           submitted:false
         }
@@ -67,25 +68,24 @@ export default {
             const InputPassword = this.InputPassword
             this.submitted = true;
             axios.post('http://127.0.0.1:3000/api/auth/signup', {
-                user_name: InputName,
-                user_email: InputEmail,
-                user_password: InputPassword
+                userName: InputName,
+                email: InputEmail,
+                password: InputPassword
             })
             .then(function (response) {
                 console.log(response)
                 if (response.statusText==='Created'){
                     axios.post('http://127.0.0.1:3000/api/auth/login', {
-                        user_email: InputEmail,
-                        user_password: InputPassword
+                        email: InputEmail,
+                        password: InputPassword
                     })
                     .then(function (response) {
                         //console.log(response)
-                        localStorage.setItem('connected','false')
                         localStorage.setItem('token',response.data.token)
                         localStorage.setItem('userId',response.data.userId)
                         localStorage.setItem('userName',response.data.userName)
-                        localStorage.setItem('userAvatar',response.data.userAvatar)
-                        this.$router.push('/messages')
+                        localStorage.setItem('avatar',response.data.userAvatar)
+                        router.push('/messages')
 
                     })
                     .catch(function (error) {

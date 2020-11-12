@@ -36,9 +36,11 @@ db.messages = require('./message.js')(sequelize, Sequelize);
 db.comments = require('./comment.js')(sequelize, Sequelize);
 
 db.comments.belongsTo(db.messages);
+db.comments.belongsTo(db.users);
 db.messages.hasMany(db.comments);
-db.messages.belongsTo(db.users, {foreignKey: 'userID', otherKey:'id'});
+db.messages.belongsTo(db.users);
 db.users.hasMany(db.messages);
+db.users.hasMany(db.comments);
 
 
 module.exports = db;

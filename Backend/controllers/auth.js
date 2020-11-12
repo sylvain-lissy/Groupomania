@@ -10,15 +10,13 @@ const { sequelize } = require("../models");
 // Création de nouveaux utilisateurs (Post signup)
 exports.signup = (req, res, next) => {
     // Hash du mot de passe avec bcrypt
-    bcrypt.hash(req.body.user_password, 10)
+    bcrypt.hash(req.body.password, 10)
     .then(hash => {
         // Création du nouvel utilisateur
         const user = new User({
-            user_name: req.body.user_name,
-            user_email: req.body.user_email,
-            user_password: hash,
-            //user_role:3,
-            user_dateInscription: Date.now()
+            userName: req.body.userName,
+            email: req.body.email,
+            password: hash,
         })
         // Sauvegarde dans la base de données
         user.save()
@@ -31,14 +29,14 @@ exports.signup = (req, res, next) => {
 // Création de connexion d'utilisateur enregistré (Post login)
 exports.login = (req, res, next) => {
     // Recherche d'un utilisateur dans la base de données
-    User.findOne({where: { user_email: req.body.user_email }})
+    User.findOne({where: { email: req.body.email }})
     .then(user => {
         // Si on ne trouve pas l'utilisateur
         if(!user) {
             return res.status(401).json({ error: 'Utilisateur non trouvé !'})
         }
         // On compare le mot de passe de la requete avec celui de la base de données
-        bcrypt.compare(req.body.user_password, user.user_password)
+        bcrypt.compare(req.body.password, user.password)
         .then(valid => {
             if(!valid) {
                 return res.status(401).json({ error: 'Mot de passe incorrect !'})
@@ -46,8 +44,8 @@ exports.login = (req, res, next) => {
             res.status(200).json({
                 message: 'Utilisateur connecté !',
                 userId: user.id,
-                userName : user.user_name,
-                userAvatar : user.user_avatar,
+                userName : user.userName,
+                avatar : user.avatar,
                 // Création d'un token pour sécuriser le compte de l'utilisateur
                 token: jwt.sign(
                     { userId: user.id },
@@ -56,7 +54,7 @@ exports.login = (req, res, next) => {
                 )
             });
         })
-        .catch(error => res.status(500).json({ error }));
+        .catch(error => res.status(501).json({ error }));
     })
-    .catch(error => res.status(500).json({ error }));
+    .catch(error => res.status(502).json({ error }));
 }; 

@@ -16,7 +16,7 @@ exports.findAllMessages = (req, res, next) => {
       {
         model: User,
         required: true,
-        attributes:['user_name','user_avatar']
+        attributes:['userName','avatar']
       },
     order:[['id','DESC']]
     
@@ -27,12 +27,12 @@ exports.findAllMessages = (req, res, next) => {
         return Object.assign({},
           {
             msgId: message.id,
-            msgDate: message.message_date.split('-').reverse().join('/'),
-            msgTxt: message.message_content,
-            msgImg: message.message_image,
-            msgUID: message.userID,
-            msgUsr: message.User.user_name,
-            msgIcn: message.User.user_avatar
+            msgDate: message.createdAt,
+            msgTxt: message.message,
+            msgImg: message.messageUrl,
+            msgUID: message.userId,
+            msgUsr: message.User.userName,
+            msgIcn: message.User.avatar
           }
         )
       });
@@ -49,17 +49,17 @@ exports.findOneMessage = (req, res, next) => {
     include: {
       model: User,
       required: true,
-      attributes:['user_name','user_avatar'] 
+      attributes:['userName','avatar'] 
     }
   })
   .then(message => {
       OnlyOneMessage.id = message.id
       OnlyOneMessage.userID = message.UserId
-      OnlyOneMessage.userAvatar = message.User.user_avatar
-      OnlyOneMessage.userName = message.User.user_name
-      OnlyOneMessage.date = message.message_date.split('-').reverse().join('/')
-      OnlyOneMessage.text = message.message_content
-      OnlyOneMessage.image = message.message_image
+      OnlyOneMessage.userAvatar = message.User.avatar
+      OnlyOneMessage.userName = message.User.userName
+      OnlyOneMessage.date = message.createdAt
+      OnlyOneMessage.text = message.message
+      OnlyOneMessage.image = message.messageUrl
   })
   .then(() => {
     Comment.count({ where: {MessageId: req.params.id} })
