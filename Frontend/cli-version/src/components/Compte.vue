@@ -16,7 +16,7 @@
                                 <div class="modal fade" id="modalAvatar" tabindex="-1" aria-labelledby="modalAvatar" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
-                                            <form enctype="multipart/form-data">
+                                            <form @submit.prevent="updateAvatar()">
                                                 <div class="modal-header">
                                                     <p class="modal-title h5">Changer la photo de profile</p>
                                                 </div>
@@ -32,14 +32,15 @@
                                                     <div class="col-12 justify-content-center">
                                                         <div class="form-group justify-content-center">
                                                             <label for="File" class="sr-only">Choisir une nouvelle photo</label>
-                                                            <input v-on:change="onFileChange()" type="file" ref="file" class="form-control-file" id="File" accept=".jpg, .jpeg, .gif, .png">
+                                                            <input v-on:change="onFileChange()" type="file" ref="file" name="image" class="form-control-file" id="File" accept=".jpg, .jpeg, .gif, .png">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <div class="row w-100 justify-content-spacebetween">
                                                         <div class="col-6"><a data-dismiss="modal" class="btn btn-secondary btn-block">Annuler</a></div>
-                                                        <div class="col-6"><a @click="updateAvatar()" class="btn btn-success btn-block">Valider</a></div>
+                                                        <!-- <div class="col-6"><a @click="updateAvatar()" class="btn btn-success btn-block">Valider</a></div> -->
+                                                        <div class="col-6"><button type="submit">Valider</button></div>
                                                     </div>
                                                 </div>
                                             </form>
@@ -92,17 +93,19 @@ export default {
     methods:{
         onFileChange() {
             this.file = this.$refs.file.files[0];
+            this.newAvatar = URL.createObjectURL(this.file)
         },
         async updateAvatar() {
             //axios.post('http://127.0.0.1:3000/users/' + localStorage.getItem('UserId'), {avatar = ""})
             let formData = new FormData()
-            formData.append('file', this.file);
-            console.log(formData)
+            formData.append('avatar', this.file);
+            console.log(formData.get('avatar'))
             axios.put('http://127.0.0.1:3000/api/users/' + localStorage.getItem('userId'), 
                 formData, 
                 { 
                 headers:{
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }
             }).then(function(){
                 alert('OK message reçu !')
