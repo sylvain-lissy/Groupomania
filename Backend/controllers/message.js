@@ -5,9 +5,8 @@ const Message = models.messages;
 const Comment = models.comments;
 const User = models.users
 
-//const fs = require('fs');
+const fs = require('fs');
 //const { join } = require("path");
-//const message = require("../models/message");
 
 // logique métier : lire tous messages
 exports.findAllMessages = (req, res, next) => {
@@ -73,19 +72,20 @@ exports.findOneMessage = (req, res, next) => {
 
 // logique métier : créer un message
 exports.createMessage = (req, res, next) => {
-  const messageObject = req.body;
+  console.log(req)
   // Création d'un nouvel objet message
+  let varImage =""
+  if (req.file) { varImage = `${req.protocol}://${req.get('host')}/images/${req.file.filename}` }
   const message = new Message(
-    req.body.message_image ? 
-      {
-        ...messageObject,
-        // Création de l'URL de l'image : http://localhost:8080/images/nomdufichier 
-        message_image: `${req.protocol}://${req.get('host')}/images/${req.body.message_image}`
-      } : { ...messageObject});
-      
+    {
+      UserId: req.body.UserId,
+      message: req.body.message,
+      messageUrl: varImage
+    }
+  )  
   // Enregistrement de l'objet message dans la base de données
   message.save()
-    .then(() => res.status(201).json({ message: 'Message créé !'}))
+    .then((retour) => res.status(201).json({message: `Message créé !`, retour}))
     .catch(error => res.status(400).json({ error }));
 }
 

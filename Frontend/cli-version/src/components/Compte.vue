@@ -40,7 +40,7 @@
                                                     <div class="row w-100 justify-content-spacebetween">
                                                         <div class="col-6"><a data-dismiss="modal" class="btn btn-secondary btn-block">Annuler</a></div>
                                                         <!-- <div class="col-6"><a @click="updateAvatar()" class="btn btn-success btn-block">Valider</a></div> -->
-                                                        <div class="col-6"><button type="submit">Valider</button></div>
+                                                        <div class="col-6"><button type="submit" class="btn btn-success btn-block">Valider</button></div>
                                                     </div>
                                                 </div>
                                             </form>
@@ -98,16 +98,17 @@ export default {
         updateAvatar() {
             let formData = new FormData()
             formData.append('image', this.file);
-            console.log(formData.get('image'))
+            console.log(formData)
             axios.put('http://127.0.0.1:3000/api/users/' + localStorage.getItem('userId'), 
                 formData, 
                 { 
                 headers:{
-                    // 'Content-Type': 'multipart/form-data',
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }
-            }).then(function(){
-                alert('OK message reçu !')
+            })
+            .then(res => {
+                localStorage.setItem('avatar', res.data.avatar)
+                location.reload()
             })
             .catch(function(){
                 alert('Oups problème !')

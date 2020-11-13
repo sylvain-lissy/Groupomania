@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import router from '../router'
+//import router from '../router'
 export default {
     name: 'NavUserMenu',
     data(){
@@ -34,7 +34,8 @@ export default {
     methods:{
         deconnexion:function(){
             localStorage.clear()
-            router.push('/')
+            location.reload()
+            //router.push('/')
         }
     }
 }

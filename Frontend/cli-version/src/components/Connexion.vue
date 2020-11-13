@@ -56,7 +56,7 @@ export default {
         }
     },
     methods: {
-        handleSubmit () {
+        handleSubmit () {            
             this.submitted = true;
             axios.post('http://127.0.0.1:3000/api/auth/login', {
                 email: this.InputEmail,
@@ -69,7 +69,7 @@ export default {
                 localStorage.setItem('userName',response.data.userName)
                 localStorage.setItem('avatar',response.data.avatar)
                 localStorage.setItem('role',response.data.role)
-                router.push('/messages')
+                router.push('/messages')                
             })
             .catch(function (error) {
                   console.log(error)
