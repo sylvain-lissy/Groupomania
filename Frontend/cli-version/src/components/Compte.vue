@@ -3,6 +3,9 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8">
+                    <router-link to="/messages" class="my-2 btn btn-sm btn-block btn-success">...retour aux messages</router-link>                
+                </div>
+                <div class="col-12 col-md-10 col-lg-8">
                     <div class="card bg-light">
                         <div class="card-header text-center" style="background-color:ghostwhite;">
                             <span class="text-dark h6">{{userName}}</span>
@@ -38,9 +41,8 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <div class="row w-100 justify-content-spacebetween">
-                                                        <div class="col-6"><a data-dismiss="modal" class="btn btn-secondary btn-block">Annuler</a></div>
-                                                        <!-- <div class="col-6"><a @click="updateAvatar()" class="btn btn-success btn-block">Valider</a></div> -->
-                                                        <div class="col-6"><button type="submit" class="btn btn-success btn-block">Valider</button></div>
+                                                        <div class="col-6"><a data-dismiss="modal" class="btn btn-sm btn-secondary btn-block">Annuler</a></div>
+                                                        <div class="col-6"><button type="submit" class="btn btn-sm btn-success btn-block">Valider</button></div>
                                                     </div>
                                                 </div>
                                             </form>

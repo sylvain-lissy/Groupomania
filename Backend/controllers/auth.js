@@ -44,6 +44,7 @@ exports.login = (req, res, next) => {
             res.status(200).json({
                 message: 'Utilisateur connecté !',
                 userId: user.id,
+                role: user.isAdmin,
                 userName : user.userName,
                 avatar : user.avatar,
                 // Création d'un token pour sécuriser le compte de l'utilisateur

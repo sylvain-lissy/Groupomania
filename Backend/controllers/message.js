@@ -29,7 +29,7 @@ exports.findAllMessages = (req, res, next) => {
             msgDate: message.createdAt,
             msgTxt: message.message,
             msgImg: message.messageUrl,
-            msgUID: message.userId,
+            msgUID: message.UserId,
             msgUsr: message.User.userName,
             msgIcn: message.User.avatar
           }
@@ -72,7 +72,8 @@ exports.findOneMessage = (req, res, next) => {
 
 // logique métier : créer un message
 exports.createMessage = (req, res, next) => {
-  console.log(req)
+console.log(req.body, req.file)
+
   // Création d'un nouvel objet message
   let varImage =""
   if (req.file) { varImage = `${req.protocol}://${req.get('host')}/images/${req.file.filename}` }
@@ -82,7 +83,7 @@ exports.createMessage = (req, res, next) => {
       message: req.body.message,
       messageUrl: varImage
     }
-  )  
+  )
   // Enregistrement de l'objet message dans la base de données
   message.save()
     .then((retour) => res.status(201).json({message: `Message créé !`, retour}))

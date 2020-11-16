@@ -1,13 +1,21 @@
 const db = require("../models")
 const Comment = db.comments
+const User = db.users
 const Message = db.messages
 
 // logique métier : lire tous les commentaires
 exports.findAllComments = (req, res, next) => {
-  Comment.findAll({ where: {MessageId: req.params.id} })
+  const CommentsForOneMessage = {}
+  Comment.findAll({ 
+    where: {MessageId: req.params.id},
+    include: {
+      model: User,
+      required: true,
+      attributes:['userName','avatar']
+    } 
+  })
   .then(comments => {
-      console.log(comments);
-      res.status(200).json({data: comments});
+      res.status(200).json(comments);
   })
   .catch(error => res.status(400).json({ error }));
 };
@@ -24,11 +32,14 @@ exports.findOneComment = (req, res, next) => {
 
 // logique métier : créer un commentaire
 exports.createComment = (req, res, next) => {
-  const commentObject = req.body;
-  // Création d'un nouvel objet commentaire
-  const comment = new Comment({
-    ...commentObject
-  });
+  console.log(req.body)
+  const comment = new Comment(
+    {
+      UserId: req.body.UserId,
+      MessageId: req.body.MessageId,
+      comment: req.body.comment,
+    }
+  )
   // Enregistrement de l'objet commentaire dans la base de données
   comment.save()
     .then(() => res.status(201).json({ message: 'Commentaire ajouté !'}))

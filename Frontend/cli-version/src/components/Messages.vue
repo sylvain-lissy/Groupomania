@@ -3,18 +3,19 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8" id="allMessages">
-                    <a  href="" data-toggle="modal" data-target="#modalAddMessage" class="my-2 btn btn-small btn-block btn-light text-dark ">Poster un message...</a>
+                    <a  href="" data-toggle="modal" data-target="#modalAddMessage" class="my-2 btn btn-sm btn-block btn-success">Poster un message...</a>
+                    <!-- Modal ajout de message -->
                     <div class="modal fade" id="modalAddMessage" tabindex="-1" aria-labelledby="modalAddMessage" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form @submit.prevent="addNewMessage()" enctype="multipart/form-data">
+                                <form enctype="multipart/form-data">
                                     <div class="modal-header">
                                         <p class="modal-title h5">Poster un nouveau message</p>
                                     </div>
                                     <div class="row modal-body">
                                         <div class="col-12 justify-content-center form-group">
                                             <label for="newMessage" class="sr-only">Message :</label>
-                                            <textarea class="form-control" v-model="newMessage" id="newMessage" name="newMessage" rows="10" placeholder="Votre message ici..."></textarea>
+                                            <textarea class="form-control" v-model="newMessage" id="newMessage" name="message" rows="10" placeholder="Votre message ici..."></textarea>
                                         </div>
                                         <div class="col-12 justify-content-center text-center">
                                             <img :src="newImage" class="w-50 rounded">
@@ -30,7 +31,41 @@
                                     <div class="modal-footer">
                                         <div class="row w-100 justify-content-spacebetween">
                                             <div class="col-6"><a data-dismiss="modal" class="btn btn-secondary btn-block">Annuler</a></div>
-                                            <div class="col-6"><button type="submit" class="btn btn-success btn-block">Valider</button></div>
+                                            <div class="col-6"><button type="submit" @click.prevent="addNewMessage()" class="btn btn-success btn-block">Valider</button></div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal edition de message -->
+                    <div class="modal fade" id="modalEditMessage" tabindex="-1" aria-labelledby="modalEditMessage" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <form enctype="multipart/form-data">
+                                    <div class="modal-header">
+                                        <p class="modal-title h5">Editer message</p>
+                                    </div>
+                                    <div class="row modal-body">
+                                        <div class="col-12 justify-content-center form-group">
+                                            <label for="editMessage" class="sr-only">Message :</label>
+                                            <textarea class="form-control" v-model="newMessage" id="editMessage" name="message" rows="10" placeholder="Votre message ici..."></textarea>
+                                        </div>
+                                        <div class="col-12 justify-content-center text-center">
+                                            <img :src="newImage" class="w-50 rounded">
+                                            <p class="small text-center">Image à partager</p>
+                                        </div>
+                                        <div class="col-12 justify-content-center">
+                                            <div class="form-group justify-content-center">
+                                                <label for="File" class="sr-only">Choisir une nouvelle photo</label>
+                                                <input @change="onFileChange()" type="file" ref="file" name="image" class="form-control-file" id="File" accept=".jpg, .jpeg, .gif, .png">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <div class="row w-100 justify-content-spacebetween">
+                                            <div class="col-6"><a data-dismiss="modal" class="btn btn-secondary btn-block">Annuler</a></div>
+                                            <div class="col-6"><button type="submit" @click.prevent="editMessage()" class="btn btn-success btn-block">Valider</button></div>
                                         </div>
                                     </div>
                                 </form>
@@ -50,8 +85,9 @@ export default {
     name: 'Messages',
     data () {
         return {
+            isAdmin:false,
+            newImage:'',
             currentUserId:'', 
-            newImage:'', 
             newMessage:'', 
             file:null
         }
@@ -63,23 +99,27 @@ export default {
         },
         addNewMessage() {
             const formData = new FormData()
-            formData.append('UserId', this.currentUserId.toString())
-            formData.append('message', this.newMessage.toString())
-            formData.append('image', this.file)
-            axios.post('http://127.0.0.1:3000/api/messages/', formData,
+            formData.set('image', this.file)
+            formData.set('UserId', this.currentUserId.toString())
+            formData.set('message', this.newMessage.toString())
+            axios.post('http://127.0.0.1:3000/api/messages/',
+                formData,
                 {headers: 
-                    {Authorization:'Bearer ' + localStorage.getItem('token')}
-                }
+                    {
+                        'Authorization':'Bearer ' + localStorage.getItem('token')
+                    }
+                },
             )
-            .then(res => {
+            .then(()=> {
                 this.UserId = ''
                 this.newMessage = ''
                 this.file = null
-                console.log(res.data)
-            })
+                location.reload()
+            }).catch((error)=>{console.log(error)})
         }
     },
     created: function () {
+        this.isAdmin = localStorage.getItem('role')
         this.currentUserId = localStorage.getItem('userId')
         if (localStorage.getItem('refresh')===null) {
             localStorage.setItem('refresh', 0)
@@ -87,20 +127,21 @@ export default {
         }
         axios.get('http://127.0.0.1:3000/api/messages',{ headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
             .then(res => {
-                //console.log(res)
                 const rep = res.data.ListeMessages
+                console.log(rep)
                 for (const message in rep){
                     const MessagesByCard = document.getElementById("allMessages")
                     const OneCard = document.createElement("div")
                     OneCard.classList.add("card", "bg-light", "my-3")
                     OneCard.innerHTML=
-                        `<div class="card-header bg-light d-flex align-items-center m-0 p-1">
-                            <img src="${rep[message].msgIcn}" height="40" class="m-0 rounded-circle"/>
-                            <span class="small text-dark m-0 p-1">Posté par "${rep[message].msgUsr}", le ${rep[message].msgDate.slice(0,10).split('-').reverse().join('/') + ' à ' + rep[message].msgDate.slice(11,16)}</span>
+                        `<div class="card-header bg-light d-flex align-items-center justify-content-between m-0 p-1">
+                            <div>
+                                <img src="${rep[message].msgIcn}" height="40" class="m-0 rounded-circle"/>
+                                <span class="small text-dark m-0 p-1">Posté par "${rep[message].msgUsr}", le ${rep[message].msgDate.slice(0,10).split('-').reverse().join('/') + ' à ' + rep[message].msgDate.slice(11,16)}</span>
+                            </div>
+                            <div id="adus${rep[message].msgId}"></div>
                         </div>
                         <div class="card-body text-dark text-left" id="MessageContainer${rep[message].msgId}">
-                            <!--<p class="small">${rep[message].msgTxt}</p>
-                            <img src="${rep[message].msgImg}" class="w-100"/>-->
                         </div>
                         <div class="card-footer bg-light text-dark text-left m-0">
                             <a href="#/commentaires/${rep[message].msgId}" class="h6 small">Voir les commentaires</a>
@@ -119,6 +160,14 @@ export default {
                         ImageContainer.classList.add("w-100")
                         ImageContainer.setAttribute("src", `${rep[message].msgImg}`)
                         MessageImage.appendChild(ImageContainer)
+                    }
+                    if (rep[message].msgUID == localStorage.getItem('userId') || localStorage.getItem('role') == 'true' ) {
+                        const showAdminPost = document.getElementById("adus"+`${rep[message].msgId}`)
+                        const addAdminPanel = document.createElement("div")
+                        addAdminPanel.innerHTML = `
+                            <a href="" data-toggle="modal" data-target="#modalEditMessage"><img src="../images/edit.png" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
+                            <a href=""><img src="../images/drop.png" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>`
+                        showAdminPost.appendChild(addAdminPanel)
                     }
                 }
             })
