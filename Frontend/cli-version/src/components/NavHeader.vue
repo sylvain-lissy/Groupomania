@@ -15,8 +15,6 @@ import NavBrand from "./NavBrand"
 import NavUserMenu from "./NavUserMenu"
 import NavDefault from "./NavDefault"
 
-// import router from '../router'
-
 export default {
     name: 'NavHeader',
     components: { 
@@ -32,7 +30,6 @@ export default {
     computed:{
         isLogged(){
             if (localStorage.getItem('token') !== null){   
-                //router.push('/messages')
                 return true
             }
             return false
@@ -40,8 +37,9 @@ export default {
     }
 }
 </script>
+
 <style>
 body {
-  background-color: #091F43;
+background-color: #091F43;
 }
 </style>

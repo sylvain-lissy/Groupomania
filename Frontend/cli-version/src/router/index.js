@@ -18,13 +18,23 @@ const routes = [
     },
     {
         path: '/compte',
-        name: 'compte',
+        name: 'Compte',
         component: () => import('../components/Compte')
     },
     {
         path: '/messages',
         name: 'Messages',
         component: () => import('../components/Messages')
+    },
+    {
+        path: '/message/edit/:id',
+        name: 'Message Edit',
+        component: () => import('../components/MessageEdit')
+    },
+    {
+        path: '/message/drop/:id',
+        name: 'Message Drop',
+        component: () => import('../components/MessageDrop')
     },
     {
         path: '/commentaires/:id',

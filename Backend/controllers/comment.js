@@ -12,7 +12,8 @@ exports.findAllComments = (req, res, next) => {
       model: User,
       required: true,
       attributes:['userName','avatar']
-    } 
+    }, 
+    order:[['id','DESC']]
   })
   .then(comments => {
       res.status(200).json(comments);
@@ -24,7 +25,6 @@ exports.findAllComments = (req, res, next) => {
 exports.findOneComment = (req, res, next) => {
   Comment.findOne({ where: {id: req.params.id} })
   .then(comment => {
-    console.log(comment);
     res.status(200).json(comment)
   })
   .catch(error => res.status(404).json({ error }));
@@ -32,7 +32,6 @@ exports.findOneComment = (req, res, next) => {
 
 // logique métier : créer un commentaire
 exports.createComment = (req, res, next) => {
-  console.log(req.body)
   const comment = new Comment(
     {
       UserId: req.body.UserId,

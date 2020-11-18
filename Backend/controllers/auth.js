@@ -21,7 +21,7 @@ exports.signup = (req, res, next) => {
         // Sauvegarde dans la base de données
         user.save()
         .then(() => res.status(201).json({ message: 'Utilisateur créé !'}))
-        .catch(error => res.status(400).json({ error }));
+        .catch(error => res.status(401).json({ error }));
     })
     .catch(error => res.status(500).json({ error }));
 };
@@ -33,7 +33,7 @@ exports.login = (req, res, next) => {
     .then(user => {
         // Si on ne trouve pas l'utilisateur
         if(!user) {
-            return res.status(401).json({ error: 'Utilisateur non trouvé !'})
+            return res.status(404).json({ error: 'Utilisateur non trouvé !'})
         }
         // On compare le mot de passe de la requete avec celui de la base de données
         bcrypt.compare(req.body.password, user.password)

@@ -18,10 +18,8 @@ exports.findAllMessages = (req, res, next) => {
         attributes:['userName','avatar']
       },
     order:[['id','DESC']]
-    
   })
   .then(messages => {
-      //console.log(messages)
       const ListeMessages = messages.map(message => {
         return Object.assign({},
           {
@@ -72,7 +70,6 @@ exports.findOneMessage = (req, res, next) => {
 
 // logique métier : créer un message
 exports.createMessage = (req, res, next) => {
-console.log(req.body, req.file)
 
   // Création d'un nouvel objet message
   let varImage =""
@@ -92,10 +89,10 @@ console.log(req.body, req.file)
 
 // logique métier : modifier un message
 exports.modifyMessage = (req, res, next) => {
-  const messageObject = req.body.message_image ?
+  const messageObject = req.file ?
     {
       ...req.body.message,
-      message_image: `${req.protocol}://${req.get('host')}/images/${req.body.message_image}`
+      messageUrl: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`
     } : { ... req.body};
 
   Message.update({ ...messageObject, id:  req.params.id}, { where: {id: req.params.id} })

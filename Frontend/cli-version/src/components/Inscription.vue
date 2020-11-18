@@ -1,6 +1,5 @@
 <template>
 <div>
-    <!-- <NavHeader></NavHeader> -->
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-10 col-lg-4">
@@ -49,6 +48,7 @@
 <script>
 import axios from 'axios'
 import router from '../router'
+import Swal from 'sweetalert2'
 
 export default {
     name: "Inscription",
@@ -72,29 +72,62 @@ export default {
                 password: InputPassword
             })
             .then(function (response) {
-                console.log(response)
                 if (response.statusText==='Created'){
                     axios.post('http://127.0.0.1:3000/api/auth/login', {
                         email: InputEmail,
                         password: InputPassword
                     })
                     .then(function (response) {
-                        //console.log(response)
                         localStorage.setItem('token',response.data.token)
                         localStorage.setItem('userId',response.data.userId)
                         localStorage.setItem('userName',response.data.userName)
                         localStorage.setItem('avatar',response.data.userAvatar)
                         localStorage.setItem('role',response.data.role)
-                        router.push('/messages')
-
+                        Swal.fire({
+                            text: 'Inscription réussie !',
+                            footer: 'Connexion en cours...',
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                            willClose: () => { router.push('/messages') }
+                        })
                     })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                    .catch(function(error) {
+                        const codeError = error.message.split('code ')[1]
+                        let messageError = ""
+                        switch (codeError){
+                            case '401': messageError = "Mot de passe erroné !";break
+                            case '404': messageError = "Utilisateur non-trouvé !";break
+                            case '501': messageError = "501";break
+                            case '502': messageError = "502";break
+                        }
+                        Swal.fire({
+                            title: 'Une erreur est survenue',
+                            text: messageError,
+                            icon: 'error',
+                            timer: 3500,
+                            showConfirmButton: false,
+                            timerProgressBar: true,
+                        })  
+                    })
                 }
             })
             .catch(function (error) {
-              console.log(error);
+                const codeError = error.message.split('code ')[1]
+                let messageError = ""
+                switch (codeError){
+                    case '401': messageError = "Adresse email déjà utilisée !";break
+                    case '501': messageError = "500";break
+                }
+                Swal.fire({
+                    title: 'Une erreur est survenue',
+                    text: messageError,
+                    icon: 'error',
+                    timer: 3500,
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                })
             });
         }
     }

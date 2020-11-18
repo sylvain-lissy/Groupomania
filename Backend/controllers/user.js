@@ -10,7 +10,6 @@ const fs = require('fs');
 exports.findAllUsers = (req, res, next) => {
     User.findAll()
     .then(users => {
-        console.log(users);
         res.status(200).json({data: users});
     })
     .catch(error => res.status(400).json({ error }));
@@ -53,7 +52,6 @@ const userInfo = {}
 // logique métier : modifier un utilisateur
 exports.modifyUser = (req, res, next) => {
   // gestion d'ajout/modification image de profil
-  //console.log(req.file)
   const userObject = req.file ?
     {
       ...req.body.userId,

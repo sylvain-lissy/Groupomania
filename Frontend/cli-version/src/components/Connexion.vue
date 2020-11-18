@@ -1,6 +1,5 @@
 <template>
 <div>    
-    <!-- <NavHeader></NavHeader> -->
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-12 col-md-10 col-lg-4">
@@ -44,6 +43,7 @@
 <script>
 import axios from 'axios'
 import router from '../router'
+import Swal from 'sweetalert2'
 
 export default {
     name: "Connexion",
@@ -62,16 +62,38 @@ export default {
                 password: this.InputPassword
             })
             .then(function (response) {
-                console.log(response)
                 localStorage.setItem('token',response.data.token)
                 localStorage.setItem('userId',response.data.userId)
                 localStorage.setItem('userName',response.data.userName)
                 localStorage.setItem('avatar',response.data.avatar)
                 localStorage.setItem('role',response.data.role)
-                router.push('/messages')                
+                Swal.fire({
+                    text: 'Connexion réussie !',
+                    footer: 'Redirection en cours...',
+                    icon: 'success',
+                    timer: 2000,
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                    willClose: () => { router.push('/messages') }
+                })  
             })
-            .catch(function (error) {
-                  console.log(error)
+            .catch(function(error) {
+                const codeError = error.message.split('code ')[1]
+                let messageError = ""
+                switch (codeError){
+                    case '401': messageError = "Mot de passe erroné !";break
+                    case '404': messageError = "Utilisateur non-trouvé !";break
+                    case '501': messageError = "501";break
+                    case '502': messageError = "502";break
+                }
+                Swal.fire({
+                    title: 'Une erreur est survenue',
+                    text: messageError,
+                    icon: 'error',
+                    timer: 3500,
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                })  
             })
         }
     }

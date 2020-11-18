@@ -8,17 +8,16 @@
                 <p class="h5 dropdown-item-text">{{ userName}}</p>
                 <div class="dropdown-divider"></div>
                 <router-link to="/compte" class="dropdown-item">Mon compte</router-link>
-                <!-- <a class="dropdown-item" href="#/compte">Mon compte</a> -->
                 <div class="dropdown-divider"></div>
                 <a class ="dropdown-item text-danger" @click="deconnexion" href="#">Déconnexion</a>
-                <!-- <a class ="dropdown-item text-danger" @click="deconnexion" href="#">Déconnexion</a> -->
             </div>
         </div>            
     </div>
 </template>
 
 <script>
-//import router from '../router'
+import Swal from 'sweetalert2'
+
 export default {
     name: 'NavUserMenu',
     data(){
@@ -34,8 +33,15 @@ export default {
     methods:{
         deconnexion:function(){
             localStorage.clear()
-            location.reload()
-            //router.push('/')
+            Swal.fire({
+                text: 'Déconnexion en cours !',
+                footer: 'Redirection en cours...',
+                icon: 'info',
+                timer: 2000,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => { location.reload() }
+            })
         }
     }
 }
