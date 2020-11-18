@@ -40,6 +40,16 @@ const routes = [
         path: '/commentaires/:id',
         name: 'Commentaires',
         component: () => import('../components/Commentaires')
+    },
+    {
+        path: '/commentaire/edit/:id',
+        name: 'Commentaires Edit',
+        component: () => import('../components/CommentaireEdit')
+    },
+    {
+        path: '/commentaire/drop/:id',
+        name: 'Commentaires Drop',
+        component: () => import('../components/CommentaireDrop')
     }
 ]
 

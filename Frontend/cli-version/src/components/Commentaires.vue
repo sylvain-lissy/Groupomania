@@ -104,7 +104,6 @@ export default {
         axios.get('http://127.0.0.1:3000/api/messages/' + this.$route.params.id, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
             .then(res => {
                 const rep = res.data
-                console.log(rep)
                 const MessagesByCard = document.getElementById("OneMessage")
                 const OneMessage = document.createElement("div")
                 OneMessage.classList.add("card", "bg-light", "my-3")
@@ -162,7 +161,6 @@ export default {
                 } 
             })
             .catch((error)=> {
-                console.log(error)
                 const codeError = error.message.split('code ')[1]
                 let messageError = ""
                 switch (codeError){
