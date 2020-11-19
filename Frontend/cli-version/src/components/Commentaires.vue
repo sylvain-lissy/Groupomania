@@ -52,7 +52,8 @@ export default {
         return {
             newComment:null,
             currentUserId:'',
-            submitted:false
+            submitted:false,
+            isActive:''
         }
     },
     methods:{
@@ -107,10 +108,15 @@ export default {
                 const MessagesByCard = document.getElementById("OneMessage")
                 const OneMessage = document.createElement("div")
                 OneMessage.classList.add("card", "bg-light", "my-3")
+                if (rep.isActive === false) {
+                    this.isActive = "<span class='text-danger small'> (supprimé)</span>"
+                }else{
+                    this.isActive = ""
+                }
                 OneMessage.innerHTML=
                     `<div class="card-header bg-light d-flex align-items-center justify-content-between m-0 p-1">
                         <img src="${rep.userAvatar}" height="40" class="m-0 rounded-circle"/>
-                        <span class="small text-dark m-0 p-1">Posté par "${rep.userName}", le ${rep.date.slice(0,10).split('-').reverse().join('/') + ' à ' + rep.date.slice(11,16)}</span>
+                        <span class="small text-dark m-0 p-1">Posté par ${rep.userName} ${this.isActive}, le ${rep.date.slice(0,10).split('-').reverse().join('/') + ' à ' + rep.date.slice(11,16)}</span>
                         <div id="adus${rep.id}"></div>
                     </div>
                     <div class="card-body text-dark text-left" id="MessageContainer">
@@ -185,14 +191,29 @@ export default {
                     const CommentsByCard = document.getElementById("Comments")
                     const OneComment = document.createElement("div")
                     OneComment.classList.add("card", "bg-light", "my-3")
+                    if (Comment[i].User.isActive === false) {
+                        this.isActive = "<span class='text-danger small'> (supprimé)</span>"
+                    }else{
+                        this.isActive = ""
+                    }
                     OneComment.innerHTML=
                         `<div class="card-header align-items-center m-0 p-1">
-                            <p class="small text-dark m-0 p-1">Commentaire de ${Comment[i].User.userName}, le ${Comment[i].createdAt.slice(0,10).split('-').reverse().join('/')}</p>
+                            <div class="d-flex justify-content-between">
+                                <span class="small text-dark m-0 p-1">Commentaire de ${Comment[i].User.userName} ${this.isActive}, le ${Comment[i].createdAt.slice(0,10).split('-').reverse().join('/')}</span>
+                                <div id="adcom${Comment[i].id}"></div>
+                            </div>
                             <hr class="m-0 p-0 bg-secondary">
                             <p class="small text-dark m-0 p-1">${Comment[i].comment}</p>
                         </div>`
                     CommentsByCard.appendChild(OneComment)
-
+                    if (Comment[i].UserId == localStorage.getItem('userId') || localStorage.getItem('role') == 'true' ) {
+                        const showAdminComment = document.getElementById("adcom"+`${Comment[i].id}`)
+                        const addAdminPanel = document.createElement("div")
+                        addAdminPanel.innerHTML = `
+                            <a href="#/commentaire/edit/${Comment[i].id}"><img src="../images/edit.png" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
+                            <a href="#/commentaire/drop/${Comment[i].id}"><img src="../images/drop.png" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>`
+                        showAdminComment.appendChild(addAdminPanel)
+                    }
                 }
             })
             .catch(function(error) {

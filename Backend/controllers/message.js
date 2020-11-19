@@ -15,7 +15,7 @@ exports.findAllMessages = (req, res, next) => {
       {
         model: User,
         required: true,
-        attributes:['userName','avatar']
+        attributes:['userName','avatar','isActive']
       },
     order:[['id','DESC']]
   })
@@ -29,7 +29,8 @@ exports.findAllMessages = (req, res, next) => {
             msgImg: message.messageUrl,
             msgUID: message.UserId,
             msgUsr: message.User.userName,
-            msgIcn: message.User.avatar
+            msgIcn: message.User.avatar,
+            msgAct: message.User.isActive
           }
         )
       });
@@ -46,7 +47,7 @@ exports.findOneMessage = (req, res, next) => {
     include: {
       model: User,
       required: true,
-      attributes:['userName','avatar'] 
+      attributes:['userName','avatar','isActive'] 
     }
   })
   .then(message => {
@@ -54,6 +55,7 @@ exports.findOneMessage = (req, res, next) => {
       OnlyOneMessage.userID = message.UserId
       OnlyOneMessage.userAvatar = message.User.avatar
       OnlyOneMessage.userName = message.User.userName
+      OnlyOneMessage.isActive = message.User.isActive
       OnlyOneMessage.date = message.createdAt
       OnlyOneMessage.text = message.message
       OnlyOneMessage.image = message.messageUrl

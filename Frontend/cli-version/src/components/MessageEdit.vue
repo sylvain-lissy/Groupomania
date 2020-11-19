@@ -124,7 +124,24 @@ export default {
                     })  
                 }
             })
-        
+            .catch(function(error) {
+                const codeError = error.message.split('code ')[1]
+                let messageError = ""
+                switch (codeError){
+                    case '400': messageError = "Le message n'a pas été mis à jour !";break
+                    case '401': messageError = "Requête non-authentifiée !";break
+                    case '404': messageError = "Le message n'existe pas !";break
+                }
+                Swal.fire({
+                    title: 'Une erreur est survenue',
+                    text: messageError,
+                    icon: 'error',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                    willClose: () => { router.push('/messages') }
+                })  
+            })  
     }
 }
 </script>

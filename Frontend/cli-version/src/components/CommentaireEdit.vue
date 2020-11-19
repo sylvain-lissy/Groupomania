@@ -1,9 +1,130 @@
 <template>
-    <p>Comment Edit</p>
+    <div id="modalEditComment" tabindex="-1" aria-labelledby="modalEditComment" aria-hidden="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form enctype="multipart/form-data">
+                    <div class="modal-header d-flex flex-column flex-md-row align-items-center justify-content-start">
+                        <p class="modal-title h5 mr-1">Editer commentaire</p>
+                        <p class="modal-title mt-1" :class="editorColor">{{editorTag}}</p>
+                    </div>
+                    <div class="row modal-body">
+                        <div class="col-12 justify-content-center form-group">
+                            <label for="editComment" class="sr-only">Commentaire :</label>
+                            <textarea class="form-control" v-model="editComment" id="editComment" name="comment" rows="10" placeholder="Votre commentaire ici..."></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row w-100 justify-content-spacebetween">
+                            <div class="col-6"><a :href="messageId" class="btn btn-secondary btn-block">Annuler</a></div>
+                            <div class="col-6"><button type="submit" @click.prevent="updateComment()" class="btn btn-success btn-block">Valider</button></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
+import axios from 'axios'
+import router from '../router'
+import Swal from 'sweetalert2'
+
 export default {
-    name: "Commentaire Edit"
+    name: 'Commentaire Edit',
+    data (){
+        return {
+            editComment:'',
+            messageId:'',
+            editUserId:'',
+            editorTag:'',
+            editorColor:'text-secondary',
+            isSucces:false
+        }
+    },
+    methods:{
+        updateComment() {
+            axios.put('http://127.0.0.1:3000/api/comments/' + this.$route.params.id,
+                {'comment':this.editComment},
+                {headers: 
+                    {
+                        'Authorization':'Bearer ' + localStorage.getItem('token')
+                    }
+                },
+            )
+            .then(res=> {
+                if (res.status === 200) {
+                    Swal.fire({
+                        text: 'Le commentaire à été mis à jour !',
+                        footer: 'Redirection en cours...',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        willClose: () => { router.push(this.messageId.slice(1)); this.messageId = "" }
+                    })
+                }
+            })
+            .catch(function(error) {
+                const codeError = error.message.split('code ')[1]
+                let messageError = ""
+                switch (codeError){
+                    case '400': messageError = "Le commentaire n'a pas été mis à jour !";break
+                    case '401': messageError = "Requête non-authentifiée !";break
+                }
+                Swal.fire({
+                    title: 'Une erreur est survenue',
+                    text: messageError,
+                    icon: 'error',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                })  
+            })
+        }
+    },
+    beforeMount () {
+        axios.get('http://127.0.0.1:3000/api/comments/' + this.$route.params.id, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
+            .then(res => {
+                if (res.data === null){
+                    Swal.fire({
+                        title: 'Une erreur est survenue',
+                        text: "Ce commentaire n'existe pas !",
+                        icon: 'error',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        willClose: () => { router.push('/messages') }
+                    })
+                }
+                this.editUserId = res.data.UserId
+                this.messageId = "#/commentaires/" + res.data.MessageId
+                if (this.editUserId == localStorage.getItem('userId'))  {
+                    this.editorTag = "( Utilisateur : " + res.data.User.userName + " )"
+                    this.editComment = res.data.comment
+                } else if ( localStorage.getItem('role') == 'true') {
+                    this.editorTag = "( Administrateur : " + localStorage.getItem('userName') + " )"
+                    this.editComment = res.data.comment
+                    this.editorColor = "text-danger"
+                } else {
+                    Swal.fire({
+                        title: 'Une erreur est survenue',
+                        text: "Vous n'avez pas accès à cette fonctionnalité !",
+                        icon: 'error',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        timerProgressBar: true,
+                        willClose: () => { router.push(this.messageId) }
+                    })  
+                }
+            })
+        
+    }
 }
 </script>
+
+<style>
+  body {
+    background-color: #091F43;
+  }
+</style>

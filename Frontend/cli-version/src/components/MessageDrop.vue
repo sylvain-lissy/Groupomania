@@ -1,5 +1,5 @@
 <template>
-    <div id="modalEditMessage" tabindex="-1" aria-labelledby="modalEditMessage" aria-hidden="false">
+    <div id="modalDropMessage" tabindex="-1" aria-labelledby="modalDropMessage" aria-hidden="false">
         <div class="modal-dialog">
             <div class="modal-content border border-danger">
                 <form enctype="multipart/form-data">
@@ -56,7 +56,7 @@ export default {
                         text: 'Le message à été supprimé !',
                         footer: 'Redirection en cours...',
                         icon: 'success',
-                        timer: 4000,
+                        timer: 1500,
                         showConfirmButton: false,
                         timerProgressBar: true,
                         willClose: () => { router.push('/messages') }
@@ -104,7 +104,24 @@ export default {
                     })  
                 }
             })
-        
+            .catch(function(error) {
+                const codeError = error.message.split('code ')[1]
+                let messageError = ""
+                switch (codeError){
+                    case '400': messageError = "Le message n'a pas été mis à jour !";break
+                    case '401': messageError = "Requête non-authentifiée !";break
+                    case '404': messageError = "Le message n'existe pas !";break
+                }
+                Swal.fire({
+                    title: 'Une erreur est survenue',
+                    text: messageError,
+                    icon: 'error',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                    willClose: () => { router.push('/messages') }
+                })  
+            })
         }
 }
 </script>

@@ -31,7 +31,9 @@ exports.login = (req, res, next) => {
     // Recherche d'un utilisateur dans la base de données
     User.findOne({where: { email: req.body.email }})
     .then(user => {
-        // Si on ne trouve pas l'utilisateur
+        // Si l'utilisateur est inactif
+        if(user.isActive === false ){return res.status(403).json({ error: 'Utilisateur supprimé !'})}
+        // Si on ne trouve pas l'utilisateur       
         if(!user) {
             return res.status(404).json({ error: 'Utilisateur non trouvé !'})
         }

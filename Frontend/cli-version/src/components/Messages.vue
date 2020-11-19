@@ -52,9 +52,10 @@ export default {
     data () {
         return {
             isAdmin:false,
+            isActive:true,
             newImage:'',
             currentUserId:'', 
-            newMessage:'', 
+            newMessage:'',
             file:null
         }
     },
@@ -121,12 +122,17 @@ export default {
                 for (const message in rep){
                     const MessagesByCard = document.getElementById("allMessages")
                     const OneCard = document.createElement("div")
+                    if (rep[message].msgAct === false) {
+                        this.isActive = "<span class='text-danger small'> (supprimé)</span>"
+                    }else{
+                        this.isActive = ""
+                    }
                     OneCard.classList.add("card", "bg-light", "my-3")
                     OneCard.innerHTML=
                         `<div class="card-header bg-light d-flex align-items-center justify-content-between m-0 p-1">
                             <div>
                                 <img src="${rep[message].msgIcn}" height="40" class="m-0 rounded-circle"/>
-                                <span class="small text-dark m-0 p-1">Posté par "${rep[message].msgUsr}", le ${rep[message].msgDate.slice(0,10).split('-').reverse().join('/') + ' à ' + rep[message].msgDate.slice(11,16)}</span>
+                                <span class="small text-dark m-0 p-1">Posté par ${rep[message].msgUsr} ${this.isActive}, le ${rep[message].msgDate.slice(0,10).split('-').reverse().join('/') + ' à ' + rep[message].msgDate.slice(11,16)}</span>
                             </div>
                             <div id="adus${rep[message].msgId}"></div>
                         </div>

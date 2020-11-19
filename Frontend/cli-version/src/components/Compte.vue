@@ -65,7 +65,31 @@
                         <div class="card-footer" style="background-color:ghostwhite;">
                             <div class="row d-flex align-items-center m-0 p-0">
                                 <div class="col-12">
-                                    <a href="#/deleteaccount" class="btn btn-sm btn-block btn-danger">Supprimer mon compte !</a>
+                                    <a href="" data-toggle="modal" data-target="#modalDeleteAccount" class="btn btn-sm btn-block btn-danger">Supprimer mon compte !</a>
+                                    <div class="modal fade" id="modalDeleteAccount" data-backdrop="static"  data-keyboard="false" tabindex="-1" aria-labelledby="modalDeleteAccount" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content border border-danger">
+                                                <form enctype="multipart/form-data">
+                                                    <div class="modal-header">
+                                                        <p class="modal-title h5 text-danger">Supprimer mon compte ?</p>
+                                                    </div>
+                                                    <div class="row modal-body">
+                                                        <div class="col-12 justify-content-center form-group">
+                                                            <p class="text-danger"><span class="h6">ATTENTION !</span> Cette action est irreversible.</p>
+                                                            <p>Vous ne pourrais plus vous connecter avec cette adresse email mais vos messages et commentaires seront toujours visible par les autres utilisateurs.</p>
+                                                            <p>Êtes-vous <span class="font-weight-bold">certain</span> de vouloir supprimer votre compte ?</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <div class="row w-100 justify-content-spacebetween">
+                                                            <div class="col-6"><a data-dismiss="modal" class="btn btn-secondary btn-block">Annuler</a></div>
+                                                            <div class="col-6"><button type="submit" @click.prevent="deleteAccount()" class="btn btn-danger btn-block">Valider</button></div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -90,8 +114,16 @@ export default {
     name: "Compte",
     data(){
         return{
-            userName:"", email:"", role:"", createdAt:"", messagesCount:"", commentsCount:"", avatar:"",
-            newAvatar:"/images/avatars/default_user.jpg", file:null, submitted:false
+            userName:"", 
+            email:"", 
+            role:"", 
+            createdAt:"", 
+            messagesCount:"", 
+            commentsCount:"", 
+            avatar:"",
+            newAvatar:"/images/avatars/default_user.jpg", 
+            file:null, 
+            submitted:false
         }
     },
     methods:{
@@ -119,7 +151,7 @@ export default {
                     timer: 1000,
                     showConfirmButton: false,
                     timerProgressBar: true,
-                    willClose: () => { this.file = null; location.reload() }
+                    willClose: () => { location.reload() }
                 })
             })
             .catch(function(error) {
@@ -138,6 +170,42 @@ export default {
                     timerProgressBar: true,
                 })  
             })
+        },
+        deleteAccount() {
+        axios.put('http://127.0.0.1:3000/api/users/' + localStorage.getItem('userId'),
+            { 
+                userName: this.userName + "\n(Supprimé)",
+                isActive:false 
+            }, 
+            { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
+            .then(()=> {
+                localStorage.clear()
+                Swal.fire({
+                    text: 'Le compte à été supprimé !',
+                    footer: 'Déconnexion en cours...',
+                    icon: 'success',
+                    timer: 5000,
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                    willClose: () => { location.reload() }
+                })
+            })
+            .catch(function(error) {
+                const codeError = error.message.split('code ')[1]
+                let messageError = ""
+                switch (codeError){
+                    case '400': messageError = "La photo de profil n'a pas été mise à jour !";break
+                    case '401': messageError = "Requête non-authentifiée !";break
+                }
+                Swal.fire({
+                    title: 'Une erreur est survenue',
+                    text: messageError || error.message,
+                    icon: 'error',
+                    timer: 1500,
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                })  
+            })    
         }
     },
     created: function(){

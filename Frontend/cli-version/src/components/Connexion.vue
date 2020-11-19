@@ -62,6 +62,7 @@ export default {
                 password: this.InputPassword
             })
             .then(function (response) {
+
                 localStorage.setItem('token',response.data.token)
                 localStorage.setItem('userId',response.data.userId)
                 localStorage.setItem('userName',response.data.userName)
@@ -82,6 +83,7 @@ export default {
                 let messageError = ""
                 switch (codeError){
                     case '401': messageError = "Mot de passe erroné !";break
+                    case '403': messageError = "Le compte associé à cette adresse email a été supprimé !";break
                     case '404': messageError = "Utilisateur non-trouvé !";break
                     case '501': messageError = "501";break
                     case '502': messageError = "502";break
@@ -90,7 +92,7 @@ export default {
                     title: 'Une erreur est survenue',
                     text: messageError,
                     icon: 'error',
-                    timer: 3500,
+                    timer: 4000,
                     showConfirmButton: false,
                     timerProgressBar: true,
                 })  

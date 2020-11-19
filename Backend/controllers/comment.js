@@ -1,7 +1,6 @@
 const db = require("../models")
 const Comment = db.comments
 const User = db.users
-const Message = db.messages
 
 // logique métier : lire tous les commentaires
 exports.findAllComments = (req, res, next) => {
@@ -11,7 +10,7 @@ exports.findAllComments = (req, res, next) => {
     include: {
       model: User,
       required: true,
-      attributes:['userName','avatar']
+      attributes:['userName','avatar','isActive']
     }, 
     order:[['id','DESC']]
   })
@@ -23,7 +22,14 @@ exports.findAllComments = (req, res, next) => {
 
 // logique métier : lire un commentaire par son id
 exports.findOneComment = (req, res, next) => {
-  Comment.findOne({ where: {id: req.params.id} })
+  Comment.findOne({ 
+    where: {id: req.params.id},
+    include: {
+      model: User,
+      required: true,
+      attributes:['userName']
+    }
+  })
   .then(comment => {
     res.status(200).json(comment)
   })
@@ -46,10 +52,8 @@ exports.createComment = (req, res, next) => {
 }
 
 // logique métier : modifier un commentaire
-exports.modifyComment = (req, res, next) => {
-    const commentObject = req.body;
-  
-    Comment.update({ ...commentObject }, { where: {id: req.params.id} })
+exports.modifyComment = (req, res, next) => { 
+    Comment.update({ ...req.body }, { where: {id: req.params.id} })
     .then(() => res.status(200).json({ message: 'Commentaire modifié !'}))
     .catch(error => res.status(400).json({ error }));
   };
