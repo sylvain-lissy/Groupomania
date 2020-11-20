@@ -142,8 +142,8 @@ export default {
                     const showAdminPost = document.getElementById("adus"+`${rep.id}`)
                     const addAdminPanel = document.createElement("div")
                     addAdminPanel.innerHTML = `
-                        <a href="#/message/edit/${rep.id}"><img src="../images/edit.png" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
-                        <a href="#/message/drop/${rep.id}"><img src="../images/drop.png" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>`
+                        <a href="#/message/edit/${rep.id}"><img src="../images/edit.svg" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
+                        <a href="#/message/drop/${rep.id}"><img src="../images/drop.svg" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>`
                     showAdminPost.appendChild(addAdminPanel)
                 }
                 if (rep.Commentaire === 0){
@@ -210,8 +210,8 @@ export default {
                         const showAdminComment = document.getElementById("adcom"+`${Comment[i].id}`)
                         const addAdminPanel = document.createElement("div")
                         addAdminPanel.innerHTML = `
-                            <a href="#/commentaire/edit/${Comment[i].id}"><img src="../images/edit.png" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
-                            <a href="#/commentaire/drop/${Comment[i].id}"><img src="../images/drop.png" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>`
+                            <a href="#/commentaire/edit/${Comment[i].id}"><img src="../images/edit.svg" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
+                            <a href="#/commentaire/drop/${Comment[i].id}"><img src="../images/drop.svg" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>`
                         showAdminComment.appendChild(addAdminPanel)
                     }
                 }

@@ -37,6 +37,7 @@
                             </div>
                         </div>
                     </div>
+                    <NoMessage v-if="noMessage"></NoMessage>
                 </div>
             </div>
         </div>
@@ -44,19 +45,24 @@
 </template>
 
 <script>
+import NoMessage from './NoMessage'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 
 export default {
     name: 'Messages',
+    components: { 
+        NoMessage
+    },
     data () {
         return {
-            isAdmin:false,
-            isActive:true,
-            newImage:'',
-            currentUserId:'', 
-            newMessage:'',
-            file:null
+            noMessage: false,
+            isAdmin: false,
+            isActive: true,
+            newImage: '',
+            currentUserId: '', 
+            newMessage: '',
+            file: null
         }
     },
     methods:{
@@ -119,6 +125,8 @@ export default {
         axios.get('http://127.0.0.1:3000/api/messages',{ headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
             .then(res => {
                 const rep = res.data.ListeMessages
+                console.log(rep.length)
+                if (rep.length === 0) { this.noMessage = true } else { this.noMessage = false }
                 for (const message in rep){
                     const MessagesByCard = document.getElementById("allMessages")
                     const OneCard = document.createElement("div")
@@ -160,8 +168,8 @@ export default {
                         const showAdminPost = document.getElementById("adus"+`${rep[message].msgId}`)
                         const addAdminPanel = document.createElement("div")
                         addAdminPanel.innerHTML = `
-                            <a href="#/message/edit/${rep[message].msgId}"><img src="../images/edit.png" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
-                            <a href="#/message/drop/${rep[message].msgId}"><img src="../images/drop.png" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>`
+                            <a href="#/message/edit/${rep[message].msgId}"><img src="../images/edit.svg" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
+                            <a href="#/message/drop/${rep[message].msgId}"><img src="../images/drop.svg" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>`
                         showAdminPost.appendChild(addAdminPanel)
                     }
                 }

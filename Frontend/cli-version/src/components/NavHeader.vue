@@ -22,13 +22,8 @@ export default {
         NavDefault, 
         NavBrand
     },
-    data(){
-        return{
-            isOne : false
-        }
-    },
     computed:{
-        isLogged(){
+        isLogged() {
             if (localStorage.getItem('token') !== null){   
                 return true
             }
@@ -39,7 +34,7 @@ export default {
 </script>
 
 <style>
-body {
-background-color: #091F43;
-}
+    body {
+        background-color: #091F43;
+    }
 </style>

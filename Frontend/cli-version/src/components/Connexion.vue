@@ -90,7 +90,7 @@ export default {
                 }
                 Swal.fire({
                     title: 'Une erreur est survenue',
-                    text: messageError,
+                    text: messageError || error.message,
                     icon: 'error',
                     timer: 4000,
                     showConfirmButton: false,

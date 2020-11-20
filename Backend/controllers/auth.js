@@ -5,10 +5,28 @@ const User = db.users;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { sequelize } = require("../models");
+const user = require("../models/user");
 
 // Logiques métiers pour les utilisateurs
 // Création de nouveaux utilisateurs (Post signup)
 exports.signup = (req, res, next) => {
+    if (User.length === 0){
+        bcrypt.hash(process.env.Admin_password, 10)
+        .then(hash => {
+            // Création du nouvel utilisateur
+            const user = new User({
+                id: 1,
+                userName: process.env.Admin_userName,
+                email: process.env.Admin_email,
+                password: hash,
+                avatar: `${req.protocol}://${req.get('host')}/images/${process.env.Admin_avatar}`,
+                isAdmin: true,
+                isActive: true
+            })
+            // Sauvegarde dans la base de données
+            user.save()
+        })
+    }
     // Hash du mot de passe avec bcrypt
     bcrypt.hash(req.body.password, 10)
     .then(hash => {

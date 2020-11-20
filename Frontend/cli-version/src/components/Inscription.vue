@@ -81,7 +81,7 @@ export default {
                         localStorage.setItem('token',response.data.token)
                         localStorage.setItem('userId',response.data.userId)
                         localStorage.setItem('userName',response.data.userName)
-                        localStorage.setItem('avatar',response.data.userAvatar)
+                        localStorage.setItem('avatar',response.data.avatar)
                         localStorage.setItem('role',response.data.role)
                         Swal.fire({
                             text: 'Inscription réussie !',
@@ -104,7 +104,7 @@ export default {
                         }
                         Swal.fire({
                             title: 'Une erreur est survenue',
-                            text: messageError,
+                            text: messageError || error.message,
                             icon: 'error',
                             timer: 3500,
                             showConfirmButton: false,
