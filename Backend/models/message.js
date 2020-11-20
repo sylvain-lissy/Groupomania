@@ -1,14 +1,18 @@
 'use strict'
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-  class Message extends Model {}
-  Message.init({
-    message: DataTypes.STRING,
-    messageUrl: DataTypes.STRING,
-  }, 
-  {
-    sequelize,
-    modelName: 'Message',
-  })
-  return Message
+    class Message extends Model {}
+    Message.init({
+        message: {
+            type: DataTypes.TEXT
+        },
+        messageUrl: {
+            type: DataTypes.STRING
+        }
+    }, 
+    {
+        sequelize,
+        modelName: 'Message',
+    })
+    return Message
 }
