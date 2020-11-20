@@ -2,7 +2,7 @@
 <div>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-12 col-md-10 col-lg-4">
+            <div class="col-12 col-md-10 col-lg-6">
                 <div class="card bg-light">
                     <p class="h5 my-3 text-center" style="color:#091F43;">Bienvenu sur le réseau social interne</p>
                     <div class="card-header bg-light">

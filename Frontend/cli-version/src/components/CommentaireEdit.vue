@@ -31,33 +31,26 @@ import router from '../router'
 import Swal from 'sweetalert2'
 
 export default {
-    name: 'Commentaire Edit',
-    data (){
+    name: "Commentaire Edit",
+    data() {
         return {
-            editComment:'',
-            messageId:'',
-            editUserId:'',
-            editorTag:'',
-            editorColor:'text-secondary',
-            isSucces:false
+            editComment: "",
+            messageId: "",
+            editUserId: "",
+            editorTag: "",
+            editorColor: "text-secondary",
+            isSucces: false
         }
     },
-    methods:{
+    methods: {
         updateComment() {
-            axios.put('http://127.0.0.1:3000/api/comments/' + this.$route.params.id,
-                {'comment':this.editComment},
-                {headers: 
-                    {
-                        'Authorization':'Bearer ' + localStorage.getItem('token')
-                    }
-                },
-            )
-            .then(res=> {
+            axios.put('http://127.0.0.1:3000/api/comments/' + this.$route.params.id, {'comment':this.editComment}, {headers: { 'Authorization':'Bearer ' + localStorage.getItem('token') }})
+            .then(res => {
                 if (res.status === 200) {
                     Swal.fire({
-                        text: 'Le commentaire à été mis à jour !',
-                        footer: 'Redirection en cours...',
-                        icon: 'success',
+                        text: "Le commentaire à été mis à jour !",
+                        footer: "'Redirection en cours...",
+                        icon: "success",
                         timer: 1500,
                         showConfirmButton: false,
                         timerProgressBar: true,
@@ -68,17 +61,17 @@ export default {
             .catch(function(error) {
                 const codeError = error.message.split('code ')[1]
                 let messageError = ""
-                switch (codeError){
+                switch (codeError) {
                     case '400': messageError = "Le commentaire n'a pas été mis à jour !";break
                     case '401': messageError = "Requête non-authentifiée !";break
                 }
                 Swal.fire({
-                    title: 'Une erreur est survenue',
-                    text: messageError,
-                    icon: 'error',
+                    title: "Une erreur est survenue",
+                    text: messageError || error.message,
+                    icon: "error",
                     timer: 1500,
                     showConfirmButton: false,
-                    timerProgressBar: true,
+                    timerProgressBar: true
                 })  
             })
         }
@@ -86,11 +79,11 @@ export default {
     beforeMount () {
         axios.get('http://127.0.0.1:3000/api/comments/' + this.$route.params.id, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
             .then(res => {
-                if (res.data === null){
+                if (res.data === null) {
                     Swal.fire({
-                        title: 'Une erreur est survenue',
+                        title: "Une erreur est survenue",
                         text: "Ce commentaire n'existe pas !",
-                        icon: 'error',
+                        icon: "error",
                         timer: 1500,
                         showConfirmButton: false,
                         timerProgressBar: true,
@@ -99,7 +92,7 @@ export default {
                 }
                 this.editUserId = res.data.UserId
                 this.messageId = "#/commentaires/" + res.data.MessageId
-                if (this.editUserId == localStorage.getItem('userId'))  {
+                if (this.editUserId == localStorage.getItem('userId')) {
                     this.editorTag = "( Utilisateur : " + res.data.User.userName + " )"
                     this.editComment = res.data.comment
                 } else if ( localStorage.getItem('role') == 'true') {
@@ -108,9 +101,9 @@ export default {
                     this.editorColor = "text-danger"
                 } else {
                     Swal.fire({
-                        title: 'Une erreur est survenue',
+                        title: "Une erreur est survenue",
                         text: "Vous n'avez pas accès à cette fonctionnalité !",
-                        icon: 'error',
+                        icon: "error",
                         timer: 1500,
                         showConfirmButton: false,
                         timerProgressBar: true,

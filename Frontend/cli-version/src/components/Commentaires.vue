@@ -110,7 +110,7 @@ export default {
                 OneMessage.classList.add("card", "bg-light", "my-3")
                 if (rep.isActive === false) {
                     this.isActive = "<span class='text-danger small'> (supprimé)</span>"
-                }else{
+                } else {
                     this.isActive = ""
                 }
                 OneMessage.innerHTML=

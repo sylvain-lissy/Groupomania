@@ -32,26 +32,19 @@ import Swal from 'sweetalert2'
 
 export default {
     name: 'Message Drop',
-    data (){
+    data () {
         return {
-            editComment:'',
-            editUserId:'',
-            editorTag:'',
-            editorColor:'text-secondary',
-            messageId:'',
-            isSucces:false
+            editComment: '',
+            editUserId: '',
+            editorTag: '',
+            editorColor: 'text-secondary',
+            messageId: ''
         }
     },
-    methods:{
+    methods: {
         deleteComment() {
-            axios.delete('http://127.0.0.1:3000/api/comments/' + this.$route.params.id,
-                {headers: 
-                    {
-                        'Authorization':'Bearer ' + localStorage.getItem('token')
-                    }
-                },
-            )
-            .then(res=> {
+            axios.delete('http://127.0.0.1:3000/api/comments/' + this.$route.params.id, { headers: { 'Authorization':'Bearer ' + localStorage.getItem('token') }})
+            .then(res => {
                 if (res.status === 200) {
                     Swal.fire({
                         text: 'Le commentaire à été supprimé !',
@@ -67,14 +60,14 @@ export default {
             .catch(function(error) {
                 const codeError = error.message.split('code ')[1]
                 let messageError = ""
-                switch (codeError){
-                    case '400': messageError = "Le commentaire n'a pas été supprimé !";break
-                    case '401': messageError = "Requête non-authentifiée !";break
+                switch (codeError) {
+                    case '400': messageError = "Le commentaire n'a pas été supprimé !"; break
+                    case '401': messageError = "Requête non-authentifiée !"; break
                 }
                 Swal.fire({
-                    title: 'Une erreur est survenue',
+                    title: "Une erreur est survenue",
                     text: messageError,
-                    icon: 'error',
+                    icon: "error",
                     timer: 1500,
                     showConfirmButton: false,
                     timerProgressBar: true,
@@ -83,13 +76,13 @@ export default {
         }
     },
     beforeMount () {
-        axios.get('http://127.0.0.1:3000/api/comments/' + this.$route.params.id, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
+        axios.get('http://127.0.0.1:3000/api/comments/' + this.$route.params.id, { headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token')}})
             .then(res => {
-                if (res.data === null){
+                if (res.data === null) {
                     Swal.fire({
-                        title: 'Une erreur est survenue',
+                        title: "Une erreur est survenue",
                         text: "Ce commentaire n'existe pas !",
-                        icon: 'error',
+                        icon: "error",
                         timer: 1500,
                         showConfirmButton: false,
                         timerProgressBar: true,
@@ -98,18 +91,18 @@ export default {
                 }
                 this.editUserId = res.data.UserId
                 this.messageId = "#/commentaires/" + res.data.MessageId
-                if (this.editUserId == localStorage.getItem('userId'))  {
+                if (this.editUserId == localStorage.getItem('userId')) {
                     this.editorTag = "( Utilisateur : " + res.data.User.userName + " )"
                     this.editComment = res.data.comment
-                } else if ( localStorage.getItem('role') == 'true') {
+                } else if (localStorage.getItem('role') == 'true') {
                     this.editorTag = "( Administrateur : " + localStorage.getItem('userName') + " )"
                     this.editComment = res.data.comment
                     this.editorColor = "text-danger"
                 } else {
                     Swal.fire({
-                        title: 'Une erreur est survenue',
+                        title: "Une erreur est survenue",
                         text: "Vous n'avez pas accès à cette fonctionnalité !",
-                        icon: 'error',
+                        icon: "error",
                         timer: 1500,
                         showConfirmButton: false,
                         timerProgressBar: true,
@@ -117,8 +110,7 @@ export default {
                     })  
                 }
             })
-        
-        }
+    }
 }
 </script>
 

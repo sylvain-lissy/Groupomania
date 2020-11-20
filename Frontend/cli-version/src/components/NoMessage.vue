@@ -7,8 +7,7 @@
         <div class="card-body">
             <p>Vous êtes la première personne à vous connecter, félicitations !</p>
             <p>Il n'y a aucun message à lire pour le moment...</p>
-            <p>À vous de commencer en postant le premier message.</p>
-            <img src="" />
+            <p>À vous de commencer en postant le premier message !</p>
         </div>
         <div class="card-footer bg-light">
             <span class="text-dark">© 2020 Groupomania RSi</span>
