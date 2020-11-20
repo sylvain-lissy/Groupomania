@@ -1,5 +1,5 @@
-'use strict'
-const { Model } = require('sequelize')
+const { Model } = require("sequelize")
+
 module.exports = (sequelize, DataTypes) => {
     class Message extends Model {}
     Message.init({
@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     }, 
     {
         sequelize,
-        modelName: 'Message',
+        modelName: "Message"
     })
     return Message
 }

@@ -16,27 +16,27 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2"
 
 export default {
-    name: 'NavUserMenu',
-    data(){
-        return{
-            userName:"", 
-            avatar:"/images/avatars/default_user.jpg",
+    name: "NavUserMenu",
+    data() {
+        return {
+            userName: "", 
+            avatar: "/images/avatars/default_user.jpg"
         }
     },
-    created: function(){
-            this.userName = localStorage.getItem('userName') 
-            this.avatar = localStorage.getItem('avatar') 
+    created: function() {
+            this.userName = localStorage.getItem("userName") 
+            this.avatar = localStorage.getItem("avatar") 
     },
-    methods:{
-        deconnexion:function(){
+    methods: {
+        deconnexion: function() {
             localStorage.clear()
             Swal.fire({
-                text: 'Déconnexion en cours !',
-                footer: 'Redirection en cours...',
-                icon: 'info',
+                text: "Déconnexion en cours !",
+                footer: "Redirection en cours...",
+                icon: "info",
                 timer: 2000,
                 showConfirmButton: false,
                 timerProgressBar: true,

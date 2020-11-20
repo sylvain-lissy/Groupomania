@@ -26,9 +26,9 @@
 </template>
 
 <script>
-import axios from 'axios'
-import router from '../router'
-import Swal from 'sweetalert2'
+import axios from "axios"
+import router from "../router"
+import Swal from "sweetalert2"
 
 export default {
     name: "Commentaire Edit",
@@ -44,12 +44,12 @@ export default {
     },
     methods: {
         updateComment() {
-            axios.put('http://127.0.0.1:3000/api/comments/' + this.$route.params.id, {'comment':this.editComment}, {headers: { 'Authorization':'Bearer ' + localStorage.getItem('token') }})
+            axios.put("http://127.0.0.1:3000/api/comments/" + this.$route.params.id, {"comment":this.editComment}, {headers: { "Authorization":"Bearer " + localStorage.getItem("token") }})
             .then(res => {
                 if (res.status === 200) {
                     Swal.fire({
                         text: "Le commentaire à été mis à jour !",
-                        footer: "'Redirection en cours...",
+                        footer: "Redirection en cours...",
                         icon: "success",
                         timer: 1500,
                         showConfirmButton: false,
@@ -59,11 +59,11 @@ export default {
                 }
             })
             .catch(function(error) {
-                const codeError = error.message.split('code ')[1]
+                const codeError = error.message.split("code ")[1]
                 let messageError = ""
                 switch (codeError) {
-                    case '400': messageError = "Le commentaire n'a pas été mis à jour !";break
-                    case '401': messageError = "Requête non-authentifiée !";break
+                    case "400": messageError = "Le commentaire n'a pas été mis à jour !"; break
+                    case "401": messageError = "Requête non-authentifiée !"; break
                 }
                 Swal.fire({
                     title: "Une erreur est survenue",
@@ -77,47 +77,46 @@ export default {
         }
     },
     beforeMount () {
-        axios.get('http://127.0.0.1:3000/api/comments/' + this.$route.params.id, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
-            .then(res => {
-                if (res.data === null) {
-                    Swal.fire({
-                        title: "Une erreur est survenue",
-                        text: "Ce commentaire n'existe pas !",
-                        icon: "error",
-                        timer: 1500,
-                        showConfirmButton: false,
-                        timerProgressBar: true,
-                        willClose: () => { router.push('/messages') }
-                    })
-                }
-                this.editUserId = res.data.UserId
-                this.messageId = "#/commentaires/" + res.data.MessageId
-                if (this.editUserId == localStorage.getItem('userId')) {
-                    this.editorTag = "( Utilisateur : " + res.data.User.userName + " )"
-                    this.editComment = res.data.comment
-                } else if ( localStorage.getItem('role') == 'true') {
-                    this.editorTag = "( Administrateur : " + localStorage.getItem('userName') + " )"
-                    this.editComment = res.data.comment
-                    this.editorColor = "text-danger"
-                } else {
-                    Swal.fire({
-                        title: "Une erreur est survenue",
-                        text: "Vous n'avez pas accès à cette fonctionnalité !",
-                        icon: "error",
-                        timer: 1500,
-                        showConfirmButton: false,
-                        timerProgressBar: true,
-                        willClose: () => { router.push(this.messageId) }
-                    })  
-                }
-            })
-        
+        axios.get("http://127.0.0.1:3000/api/comments/" + this.$route.params.id, { headers: { "Authorization": "Bearer " + localStorage.getItem("token")}})
+        .then(res => {
+            if (res.data === null) {
+                Swal.fire({
+                    title: "Une erreur est survenue",
+                    text: "Ce commentaire n'existe pas !",
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                    willClose: () => { router.push("/messages") }
+                })
+            }
+            this.editUserId = res.data.UserId
+            this.messageId = "#/commentaires/" + res.data.MessageId
+            if (this.editUserId == localStorage.getItem('userId')) {
+                this.editorTag = "( Utilisateur : " + res.data.User.userName + " )"
+                this.editComment = res.data.comment
+            } else if ( localStorage.getItem('role') == "true") {
+                this.editorTag = "( Administrateur : " + localStorage.getItem('userName') + " )"
+                this.editComment = res.data.comment
+                this.editorColor = "text-danger"
+            } else {
+                Swal.fire({
+                    title: "Une erreur est survenue",
+                    text: "Vous n'avez pas accès à cette fonctionnalité !",
+                    icon: "error",
+                    timer: 1500,
+                    showConfirmButton: false,
+                    timerProgressBar: true,
+                    willClose: () => { router.push(this.messageId) }
+                })  
+            }
+        })
     }
 }
 </script>
 
 <style>
-  body {
-    background-color: #091F43;
-  }
+    body {
+        background-color: #091F43
+    }
 </style>

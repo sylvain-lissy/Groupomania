@@ -45,52 +45,45 @@
 </template>
 
 <script>
-import NoMessage from './NoMessage'
-import axios from 'axios'
-import Swal from 'sweetalert2'
+import NoMessage from "./NoMessage"
+import axios from "axios"
+import Swal from "sweetalert2"
 
 export default {
-    name: 'Messages',
+    name: "Messages",
     components: { 
         NoMessage
     },
-    data () {
+    data() {
         return {
             noMessage: false,
             isAdmin: false,
             isActive: true,
-            newImage: '',
-            currentUserId: '', 
-            newMessage: '',
+            newImage: "",
+            currentUserId: "", 
+            newMessage: "",
             file: null
         }
     },
-    methods:{
+    methods: {
         onFileChange() {
             this.file = this.$refs.file.files[0];
             this.newImage = URL.createObjectURL(this.file)
         },
         addNewMessage() {
             const formData = new FormData()
-            formData.set('image', this.file)
-            formData.set('UserId', this.currentUserId.toString())
-            formData.set('message', this.newMessage.toString())
-            axios.post('http://127.0.0.1:3000/api/messages/',
-                formData,
-                {headers: 
-                    {
-                        'Authorization':'Bearer ' + localStorage.getItem('token')
-                    }
-                },
-            )
+            formData.set("image", this.file)
+            formData.set("UserId", this.currentUserId.toString())
+            formData.set("message", this.newMessage.toString())
+            axios.post("http://127.0.0.1:3000/api/messages/", formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
             .then(()=> {
-                this.UserId = ''
-                this.newMessage = ''
+                this.UserId = ""
+                this.newMessage = ""
                 this.file = null
                 Swal.fire({
-                    text: 'Message posté !',
-                    footer: 'Redirection en cours...',
-                    icon: 'success',
+                    text: "Message posté !",
+                    footer: "Redirection en cours...",
+                    icon: "success",
                     timer: 2000,
                     showConfirmButton: false,
                     timerProgressBar: true,
@@ -98,101 +91,100 @@ export default {
                 })
             })
             .catch((error)=>{
-                const codeError = error.message.split('code ')[1]
+                const codeError = error.message.split("code ")[1]
                 let messageError = ""
                 switch (codeError){
-                    case '400': messageError = "Le message n'a pas été posté !";break
-                    case '401': messageError = "Requête non-authentifiée !";break
+                    case "400": messageError = "Le message n'a pas été posté !"; break
+                    case "401": messageError = "Requête non-authentifiée !"; break
                 }
                 Swal.fire({
-                    title: 'Une erreur est survenue',
-                    text: messageError,
-                    icon: 'error',
+                    title: "Une erreur est survenue",
+                    text: messageError || error.message,
+                    icon: "error",
                     timer: 3500,
                     showConfirmButton: false,
-                    timerProgressBar: true,
+                    timerProgressBar: true
                 }) 
             })
         }
     },
-    created: function () {
-        this.isAdmin = localStorage.getItem('role')
-        this.currentUserId = localStorage.getItem('userId')
-        if (localStorage.getItem('refresh')===null) {
-            localStorage.setItem('refresh', 0)
+    created: function() {
+        this.isAdmin = localStorage.getItem("role")
+        this.currentUserId = localStorage.getItem("userId")
+        if (localStorage.getItem("refresh")===null) {
+            localStorage.setItem("refresh", 0)
             location.reload()
         }
-        axios.get('http://127.0.0.1:3000/api/messages',{ headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
-            .then(res => {
-                const rep = res.data.ListeMessages
-                console.log(rep.length)
-                if (rep.length === 0) { this.noMessage = true } else { this.noMessage = false }
-                for (const message in rep){
-                    const MessagesByCard = document.getElementById("allMessages")
-                    const OneCard = document.createElement("div")
-                    if (rep[message].msgAct === false) {
-                        this.isActive = "<span class='text-danger small'> (supprimé)</span>"
-                    }else{
-                        this.isActive = ""
-                    }
-                    OneCard.classList.add("card", "bg-light", "my-3")
-                    OneCard.innerHTML=
-                        `<div class="card-header bg-light d-flex align-items-center justify-content-between m-0 p-1">
-                                <img src="${rep[message].msgIcn}" height="40" class="m-0 rounded-circle"/>
-                                <span class="small text-dark m-0 p-1">Posté par ${rep[message].msgUsr} ${this.isActive}, le ${rep[message].msgDate.slice(0,10).split('-').reverse().join('/') + ' à ' + rep[message].msgDate.slice(11,16)}</span>
-                                <div id="adus${rep[message].msgId}"></div>                               
-                        </div>
-                        <div class="card-body text-dark text-left" id="MessageContainer${rep[message].msgId}">
-                        </div>
-                        <div class="card-footer bg-light text-dark text-left m-0">
-                            <a href="#/commentaires/${rep[message].msgId}" class="h6 small">Voir les commentaires</a>
-                        </div>`
-                    MessagesByCard.appendChild(OneCard)
-                    if (!rep[message].msgTxt == null || !rep[message].msgTxt == '') {
-                        const MessageTexte = document.getElementById("MessageContainer"+`${rep[message].msgId}`)
-                        const TextContainer = document.createElement("p")
-                        TextContainer.classList.add("small")
-                        TextContainer.innerHTML= `${rep[message].msgTxt}`
-                        MessageTexte.appendChild(TextContainer)
-                    }
-                    if (!rep[message].msgImg == null || !rep[message].msgImg == '') {
-                        const MessageImage = document.getElementById("MessageContainer"+`${rep[message].msgId}`)
-                        const ImageContainer = document.createElement("img")
-                        ImageContainer.classList.add("w-100")
-                        ImageContainer.setAttribute("src", `${rep[message].msgImg}`)
-                        MessageImage.appendChild(ImageContainer)
-                    }
-                    if (rep[message].msgUID == localStorage.getItem('userId') || localStorage.getItem('role') == 'true' ) {
-                        const showAdminPost = document.getElementById("adus"+`${rep[message].msgId}`)
-                        const addAdminPanel = document.createElement("div")
-                        addAdminPanel.innerHTML = `
-                            <a href="#/message/edit/${rep[message].msgId}"><img src="../images/edit.svg" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
-                            <a href="#/message/drop/${rep[message].msgId}"><img src="../images/drop.svg" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>`
-                        showAdminPost.appendChild(addAdminPanel)
-                    }
+        axios.get("http://127.0.0.1:3000/api/messages",{ headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
+        .then(res => {
+            const rep = res.data.ListeMessages
+            if (rep.length === 0) { this.noMessage = true } else { this.noMessage = false }
+            for (const message in rep) {
+                const MessagesByCard = document.getElementById("allMessages")
+                const OneCard = document.createElement("div")
+                if (rep[message].isActive === false) {
+                    this.isActive = "<span class='text-danger small'> (supprimé)</span>"
+                } else {
+                    this.isActive = ""
                 }
-            })
-            .catch((error)=>{
-                const codeError = error.message.split('code ')[1]
-                let messageError = ""
-                switch (codeError){
-                    case '400': messageError = "La liste des messages n'a pas été récupérer !";break
+                OneCard.classList.add("card", "bg-light", "my-3")
+                OneCard.innerHTML=
+                    `<div class="card-header bg-light d-flex align-items-center justify-content-between m-0 p-1">
+                            <img src="${rep[message].avatar}" height="40" class="m-0 rounded-circle"/>
+                            <span class="small text-dark m-0 p-1">Posté par ${rep[message].userName} ${this.isActive}, le ${rep[message].createdAt.slice(0,10).split('-').reverse().join('/') + ' à ' + rep[message].createdAt.slice(11,16)}</span>
+                            <div id="adus${rep[message].id}"></div>                               
+                    </div>
+                    <div class="card-body text-dark text-left" id="MessageContainer${rep[message].id}">
+                    </div>
+                    <div class="card-footer bg-light text-dark text-left m-0">
+                        <a href="#/commentaires/${rep[message].id}" class="h6 small">Voir les commentaires</a>
+                    </div>`
+                MessagesByCard.appendChild(OneCard)
+                if (!rep[message].message == null || !rep[message].message == "") {
+                    const MessageTexte = document.getElementById("MessageContainer"+`${rep[message].id}`)
+                    const TextContainer = document.createElement("p")
+                    TextContainer.classList.add("small")
+                    TextContainer.innerHTML= `${rep[message].message}`
+                    MessageTexte.appendChild(TextContainer)
                 }
-                Swal.fire({
-                    title: 'Une erreur est survenue',
-                    text: messageError,
-                    icon: 'error',
-                    timer: 3500,
-                    showConfirmButton: false,
-                    timerProgressBar: true,
-                }) 
-            })
+                if (!rep[message].messageUrl == null || !rep[message].messageUrl == '') {
+                    const MessageImage = document.getElementById("MessageContainer"+`${rep[message].id}`)
+                    const ImageContainer = document.createElement("img")
+                    ImageContainer.classList.add("w-100")
+                    ImageContainer.setAttribute("src", `${rep[message].messageUrl}`)
+                    MessageImage.appendChild(ImageContainer)
+                }
+                if (rep[message].UserId == localStorage.getItem("userId") || localStorage.getItem("role") == "true" ) {
+                    const showAdminPost = document.getElementById("adus"+`${rep[message].id}`)
+                    const addAdminPanel = document.createElement("div")
+                    addAdminPanel.innerHTML = `
+                        <a href="#/message/edit/${rep[message].id}"><img src="../images/edit.svg" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
+                        <a href="#/message/drop/${rep[message].id}"><img src="../images/drop.svg" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>`
+                    showAdminPost.appendChild(addAdminPanel)
+                }
+            }
+        })
+        .catch((error)=>{
+            const codeError = error.message.split("code ")[1]
+            let messageError = ""
+            switch (codeError){
+                case "400": messageError = "La liste des messages n'a pas été récupérer !"; break
+            }
+            Swal.fire({
+                title: "Une erreur est survenue",
+                text: messageError || error.message,
+                icon: "error",
+                timer: 3500,
+                showConfirmButton: false,
+                timerProgressBar: true
+            }) 
+        })
     }
 }
 </script>
 
 <style>
-  body {
-    background-color: #091F43;
-  }
+    body {
+        background-color: #091F43;
+    }
 </style>

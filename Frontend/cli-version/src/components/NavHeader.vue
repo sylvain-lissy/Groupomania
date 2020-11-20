@@ -16,7 +16,7 @@ import NavUserMenu from "./NavUserMenu"
 import NavDefault from "./NavDefault"
 
 export default {
-    name: 'NavHeader',
+    name: "NavHeader",
     components: { 
         NavUserMenu, 
         NavDefault, 
@@ -24,7 +24,7 @@ export default {
     },
     computed:{
         isLogged() {
-            if (localStorage.getItem('token') !== null){   
+            if (localStorage.getItem("token") !== null) {   
                 return true
             }
             return false
@@ -35,6 +35,6 @@ export default {
 
 <style>
     body {
-        background-color: #091F43;
+        background-color: #091F43
     }
 </style>

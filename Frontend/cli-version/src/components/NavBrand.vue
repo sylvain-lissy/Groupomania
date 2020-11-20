@@ -6,6 +6,6 @@
 
 <script>
 export default {
-  name: 'NavBrand'
+  name: "NavBrand"
 }
 </script>

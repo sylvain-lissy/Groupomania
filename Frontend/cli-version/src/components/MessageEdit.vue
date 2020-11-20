@@ -36,118 +36,111 @@
 </template>
 
 <script>
-import axios from 'axios'
-import router from '../router'
-import Swal from 'sweetalert2'
+import axios from "axios"
+import router from "../router"
+import Swal from "sweetalert2"
 
 export default {
-    name: 'Message Edit',
-    data (){
+    name: "Message Edit",
+    data() {
         return {
-            editMessage:'',
-            editUserId:'',
-            newImage:'',
-            editorTag:'',
-            editorColor:'text-secondary',
-            file:null,
-            isSucces:false
+            editMessage: "",
+            editUserId: "",
+            newImage: "",
+            editorTag: "",
+            editorColor: "text-secondary",
+            file: null,
+            isSucces: false
         }
     },
-    methods:{
+    methods: {
         onFileChange() {
             this.file = this.$refs.file.files[0];
             this.newImage = URL.createObjectURL(this.file)
         },
         updateMessage() {
             const formData = new FormData()
-            formData.set('image', this.file)
-            formData.set('message', this.editMessage.toString())
-            axios.put('http://127.0.0.1:3000/api/messages/' + this.$route.params.id,
-                formData,
-                {headers: 
-                    {
-                        'Authorization':'Bearer ' + localStorage.getItem('token')
-                    }
-                },
-            )
+            formData.set("image", this.file)
+            formData.set("message", this.editMessage.toString())
+            axios.put("http://127.0.0.1:3000/api/messages/" + this.$route.params.id, formData, { headers: { "Authorization":"Bearer " + localStorage.getItem("token")}})
             .then(res=> {
                 if (res.status === 200) {
                     Swal.fire({
-                        text: 'Le message à été mis à jour !',
-                        footer: 'Redirection en cours...',
-                        icon: 'success',
+                        text: "Le message à été mis à jour !",
+                        footer: "Redirection en cours...",
+                        icon: "success",
                         timer: 1000,
                         showConfirmButton: false,
                         timerProgressBar: true,
-                        willClose: () => { this.file = null; router.push('/messages') }
+                        willClose: () => { this.file = null; router.push("/messages") }
                     })
                 }
             })
             .catch(function(error) {
-                const codeError = error.message.split('code ')[1]
+                const codeError = error.message.split("code ")[1]
                 let messageError = ""
                 switch (codeError){
-                    case '400': messageError = "Le message n'a pas été mis à jour !";break
-                    case '401': messageError = "Requête non-authentifiée !";break
+                    case "400": messageError = "Le message n'a pas été mis à jour !"; break
+                    case "401": messageError = "Requête non-authentifiée !"; break
                 }
                 Swal.fire({
-                    title: 'Une erreur est survenue',
-                    text: messageError,
-                    icon: 'error',
+                    title: "Une erreur est survenue",
+                    text: messageError || error.message,
+                    icon: "error",
                     timer: 1500,
                     showConfirmButton: false,
-                    timerProgressBar: true,
+                    timerProgressBar: true
                 })  
             })
         }
     },
     beforeMount () {
-        axios.get('http://127.0.0.1:3000/api/messages/' + this.$route.params.id, { headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')} })
-            .then(res => {
-                this.editUserId = res.data.userID
-                if (this.editUserId == localStorage.getItem('userId'))  {
-                    this.editorTag = "( Utilisateur : " + res.data.userName + " )"
-                    this.editMessage = res.data.text
-                } else if ( localStorage.getItem('role') == 'true') {
-                    this.editorTag = "( Administrateur : " + localStorage.getItem('userName') + " )"
-                    this.editMessage = res.data.text
-                    this.editorColor = "text-danger"
-                } else {
-                    Swal.fire({
-                        title: 'Une erreur est survenue',
-                        text: "Vous n'avez pas accès à cette fonctionnalité !",
-                        icon: 'error',
-                        timer: 1500,
-                        showConfirmButton: false,
-                        timerProgressBar: true,
-                        willClose: () => { router.push('/messages') }
-                    })  
-                }
-            })
-            .catch(function(error) {
-                const codeError = error.message.split('code ')[1]
-                let messageError = ""
-                switch (codeError){
-                    case '400': messageError = "Le message n'a pas été mis à jour !";break
-                    case '401': messageError = "Requête non-authentifiée !";break
-                    case '404': messageError = "Le message n'existe pas !";break
-                }
+        axios.get("http://127.0.0.1:3000/api/messages/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
+        .then(res => {
+            this.editUserId = res.data.userID
+            if (this.editUserId == localStorage.getItem("userId"))  {
+                this.editorTag = "( Utilisateur : " + res.data.userName + " )"
+                this.editMessage = res.data.text
+            } else if ( localStorage.getItem("role") == "true") {
+                this.editorTag = "( Administrateur : " + localStorage.getItem("userName") + " )"
+                this.editMessage = res.data.text
+                this.editorColor = "text-danger"
+            } else {
                 Swal.fire({
-                    title: 'Une erreur est survenue',
-                    text: messageError,
-                    icon: 'error',
+                    title: "Une erreur est survenue",
+                    text: "Vous n'avez pas accès à cette fonctionnalité !",
+                    icon: "error",
                     timer: 1500,
                     showConfirmButton: false,
                     timerProgressBar: true,
-                    willClose: () => { router.push('/messages') }
+                    willClose: () => { router.push("/messages") }
                 })  
+            }
+        })
+        .catch(function(error) {
+            const codeError = error.message.split("code ")[1]
+            let messageError = ""
+            switch (codeError){
+                case "400": messageError = "Le message n'a pas été mis à jour !"; break
+                case "401": messageError = "Requête non-authentifiée !"; break
+                case "404": messageError = "Le message n'existe pas !"; break
+            }
+            Swal.fire({
+                title: "Une erreur est survenue",
+                text: messageError || error.message,
+                icon: "error",
+                timer: 1500,
+                showConfirmButton: false,
+                timerProgressBar: true,
+                willClose: () => { router.push("/messages") }
             })  
+        })  
     }
 }
 </script>
 
 <style>
-  body {
-    background-color: #091F43;
-  }
+    body {
+        background-color: #091F43;
+    }
 </style>

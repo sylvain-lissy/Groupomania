@@ -1,5 +1,5 @@
-'use strict';
-const { Model } = require('sequelize')
+const { Model } = require("sequelize")
+
 module.exports = (sequelize, DataTypes) => {
     class User extends Model {}
     User.init({
@@ -19,7 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         avatar: {
             type: DataTypes.STRING,
             allowNull: false,
-            defaultValue: 'http://127.0.0.1:3000/images/avatars/default_user.jpg'
+            defaultValue: "http://127.0.0.1:3000/images/avatars/default_user.jpg"
         },
         isAdmin: {
             type: DataTypes.BOOLEAN,
@@ -30,11 +30,11 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: true
-        },
+        }
     }, 
     {
         sequelize,
-        modelName: 'User',
+        modelName: "User"
     })
     return User
 }

@@ -17,6 +17,6 @@
 
 <script>
 export default {
-    Name: 'No Message'
+    Name: "No Message"
 }
 </script>
