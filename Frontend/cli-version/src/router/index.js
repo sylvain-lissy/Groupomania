@@ -7,6 +7,11 @@ const routes = [
         component: () => import("../components/Accueil"),
     },
     {
+        path: "/aide",
+        name: "Aide",
+        component: () => import("../components/Aide")
+    },
+    {
         path: "/connexion",
         name: "Connexion",
         component: () => import("../components/Connexion"),
@@ -20,6 +25,11 @@ const routes = [
         path: "/compte",
         name: "Compte",
         component: () => import("../components/Compte")
+    },
+    {
+        path: "/compte/messages",
+        name: "Mes Messages",
+        component: () => import("../components/MessagesUser")
     },
     {
         path: "/messages",
@@ -59,7 +69,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const publicPages = ["/", "/connexion", "/inscription"]
+    const publicPages = ["/", "/aide", "/connexion", "/inscription"]
     const authRequired = !publicPages.includes(to.path)
     const loggedIn = localStorage.getItem("userId")
     const loggedToken = localStorage.getItem("token")

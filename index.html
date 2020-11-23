@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="fr">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+        integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <title>Groupomania - Réseau social interne</title>
+</head>
+
+<body>
+    <header>
+        <div>
+            <div class="container">
+                <div class="row">
+                    <div
+                        class="col navbar navbar-dark d-flex flex-column flex-md-row justify-content-center align-items-center">
+                        <img src="/Frontend/cli-version/src/assets/logo_white.svg" height="40" alt="Logo Groupomania" />
+                        <h1 class="ml-3 mt-2 small text-light">Réseau social interne</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8">
+                    <div
+                        class="jumbotron my-2 py-2 text-center d-flex flex-column flex-md-row justify-content-center align-items-center">
+                        <a href="https://github.com/sylvain-lissy/" class="text-secondary" target="_BLANK"><img
+                                src="/Backend/images/avatars/sylvain_lissy.jpg" height="48" alt="Photo Sylvain LISSY"
+                                class="rounded-circle border border-secondary" /></a>
+                        <span class="h6 m-1">Créé par <a href="https://github.com/sylvain-lissy/" class="text-primary"
+                                target="_BLANK">sylvain lissy</a> sur le repository: <a
+                                href="https://github.com/sylvain-lissy/Groupomania" class="text-primary"
+                                target="_BLANK">groupomania</a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-10 col-lg-8 mb-3">
+                    <div class="card mb-4 mb-lg-0 border-dark">
+                        <div class="card-header text-center">
+                            <h3 class="card-title h4">Bienvenue sur le réseau social interne de Groupamania !</h3>
+                            <h4 class="card-subtitle small text-muted">Une application web Vue.js et MySQL</h4>
+                        </div>
+                        <div class="card-body">
+                            <p class="h5 card-text">Pour pouvoir utiliser correctement l’application, veuillez suivre
+                                ces instructions :</p>
+                            <ul>
+                                <li>Clonez ce repository.</li>
+                            </ul>
+                            <hr class="bg-primary">
+                            <p class="h5 card-text">Dossier Backend :</p>
+                            <p>Comme son nom l'indique, ce dossier contient la partie serveur API de notre appplication.
+                            </p>
+                            <ol>
+                                <li>Télécharger et installer Node.js</li>
+                                <li>Tapez la commande suivante : <kbd class="bg-success">npm start</kbd></li>
+                                <li>Puis, lancer le serveur en tapant la commande : <kbd class="bg-success">nodemon
+                                        server</kbd></li>
+                            </ol>
+                            <ul>
+                                <li>Le serveur doit fonctionner sur <a href="http://localhost:3000/"
+                                        class="text-white"><kbd class="bg-success">http://localhost:3000/</kbd></a></li>
+                            </ul>
+                            <hr class="bg-primary">
+                            <p class="h5 card-text">Dossier Frontend :</p>
+                            <p> Comme son nom l'indique, ce dossier contient la partie site de notre application.</p>
+                            <ol>
+                                <li>Téléchargez et ouvrez Node.js</li>
+                                <li>Tapez la commande suivante : <kbd class="bg-success">npm start</kbd></li>
+                                <li>Puis, lancer le serveur en tapant la commande : <kbd class="bg-success">npm run
+                                        serve</kbd></li>
+                            </ol>
+                            <ul>
+                                <li>Le serveur doit fonctionner sur <a href="http://localhost:8080/"
+                                        class="text-white"><kbd class="bg-success">http://localhost:8080/</kbd></a></li>
+                            </ul>
+                            <hr class="bg-primary">
+                            <p class="h5 card-text">Notes :</p>
+                            <ul>
+                                <li>Au lancement du serveur backend, la base de données sera créée automatiquement.</li>
+                                <li>Le compte administrateur sera crée en même temps que le premier utilisateur.</li>
+                                <li>Ces informations de compte sont définies dans le fichier <kbd
+                                        class="bg-success">.env</kbd></li>
+                            </ul>
+                        </div>
+                        <div class="card-footer m-1 p-0 d-flex justify-content-center">
+                            <div class="row">
+                                <div class="col">
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <div class="mt-1">
+            <div class="container">
+                <div class="row py-2">
+                    <div class="col-12 d-flex flex-column-reverse flex-md-row justify-content-md-center text-light">
+                        <p class="mb-1 mr-1">© 2020 <a href="https://github.com/sylvain-lissy/"
+                                class="text-primary">Sylvain LISSY</a></p>
+                        <p class="mb-1 mr-1 d-none d-md-block"> | </p>
+                        <p class="mb-1 mr-1">Developpeur web freelance</p>
+                        <p class="mb-1 mr-1 d-none d-md-block"> | </p>
+                        <a class="mb-1 mr-1 text-primary"
+                            href="https://github.com/sylvain-lissy/Groupomania">Groupomania</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

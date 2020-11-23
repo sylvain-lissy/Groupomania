@@ -2,14 +2,14 @@
     <div>    
         <div class="container">
             <div class="row justify-content-center">
-                <div class="col-12 col-md-10 col-lg-6">
+                <div class="col-12 col-md-10 col-lg-8">
                     <div class="card bg-light">
                         <p class="h5 my-3 text-center" style="color:#091F43;">Bienvenu sur le réseau social interne</p>
-                        <div class="card-header bg-light">
-                            <img src="../assets/logo_black.svg" class="w-75 m-0 p-0" alt="logo groupomania">
+                        <div class="card-header bg-light d-flex flex-column justify-content-center">
+                            <img src="../assets/logo_black.svg" class="m-0 p-0" height="60" alt="logo groupomania">
                             <h5 class="h6 text-center" style="color:#091F43;">Veuillez-vous identifier !</h5>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body col-md-8 col-lg-6 offset-md-2 offset-lg-3">
                             <form @submit.prevent="handleSubmit">
                                 <div class="form-group">
                                     <label for="InputEmail" class="sr-only">Adresse e-mail :</label>

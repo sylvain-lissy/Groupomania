@@ -33,6 +33,37 @@ exports.findAllMessages = (req, res, next) => {
     .catch(error => res.status(400).json({ error }))
 }
 
+// Tous les messages d'un utilisateur
+exports.findAllMessagesForOne = (req, res, next) => {
+    Message.findAll({
+        where: { UserId: req.params.id },
+        include: {
+            model: User,
+            required: true,
+            attributes: ["userName", "avatar", "isActive"]
+        },
+        order: [["id", "DESC"]]
+    })
+    .then(messages => {
+        const ListeMessages = messages.map(message => {
+            return Object.assign({},
+                {
+                    id: message.id,
+                    createdAt: message.createdAt,
+                    message: message.message,
+                    messageUrl: message.messageUrl,
+                    UserId: message.UserId,
+                    userName: message.User.userName,
+                    avatar: message.User.avatar,
+                    isActive: message.User.isActive
+                }
+            )
+        })
+        res.status(200).json({ ListeMessages })
+    })
+    .catch(error => res.status(400).json({ error }))
+}
+
 // Un seul message
 exports.findOneMessage = (req, res, next) => {
     const oneMessage = {}

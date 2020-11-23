@@ -56,7 +56,7 @@
                                     <p class="small text-left m-0 p-1">Crée le : {{createdAt}}</p>
                                     <p class="small text-left m-0 p-1">Votre contenu : </p>
                                     <ul>
-                                        <li class="small text-left m-0 p-1">{{messagesCount}} message<span v-if="messagesCount > 1">s</span></li>
+                                        <li class="small text-left m-0 p-1"><a href="#/compte/messages">{{messagesCount}} message<span v-if="messagesCount > 1">s</span></a></li>
                                         <li class="small text-left m-0 p-1">{{commentsCount}} commentaire<span v-if="commentsCount > 1">s</span></li>
                                     </ul>
                                 </div>
