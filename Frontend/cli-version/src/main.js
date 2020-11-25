@@ -5,5 +5,6 @@ import store from "./store"
 import "bootstrap"
 import "bootstrap/dist/css/bootstrap.min.css"
 import "sweetalert2"
+import "axios"
 
 createApp(App).use(store).use(router).mount("#app")
