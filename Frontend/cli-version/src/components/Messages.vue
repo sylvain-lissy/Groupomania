@@ -47,12 +47,12 @@
                                     le {{message.createdAt.slice(0,10).split('-').reverse().join('/') + ' à ' + message.createdAt.slice(11,16)}}
                                 </span>
                             </div>                                
-                            <div :id="'adus' + message.id" v-if="message.UserId == this.currentUserId || this.isAdmin == 'true'">
+                            <div v-if="message.UserId == this.currentUserId || this.isAdmin == 'true'">
                                 <a :href="'#/message/edit/' + message.id"><img src="/images/edit.svg" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
                                 <a :href="'#/message/drop/' + message.id"><img src="/images/drop.svg" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>
                             </div>                               
                         </div>
-                        <div class="card-body text-dark text-left" :id="'MessageContainer' + message.id">
+                        <div class="card-body text-dark text-left">
                             <p class="small" v-if="message.message !== ''"> {{message.message}} </p>
                             <img class="w-100" :src="message.messageUrl" v-if="message.messageUrl !== ''">
                         </div>
@@ -61,6 +61,9 @@
                         </div>
                     </div>
                     <NoMessage v-if="noMessage"></NoMessage>
+                    <div class="card bg-danger">
+                        <p class="my-2 text-center text-white">Il n'y a pas de messages plus ancien que celui au-dessus...</p>
+                    </div>
                 </div>
             </div>
         </div>

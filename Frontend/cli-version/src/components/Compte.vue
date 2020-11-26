@@ -1,6 +1,5 @@
 <template>
-    <div style="background-color: #091F43;">
-        <div class="container">
+
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8">
                     <router-link to="/messages" class="my-2 btn btn-sm btn-block btn-success">...retour aux messages</router-link>                
@@ -96,8 +95,7 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+      
 </template>
 
 <script>

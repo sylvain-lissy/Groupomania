@@ -163,7 +163,6 @@
                             </div>                
                         </div>
                         <div v-if="!isLogged" class="card-footer">
-                            <!-- Envie d'en voir plus ?  -->
                             <router-link to="/connexion">Connectez-vous</router-link> ou
                             <router-link to="/inscription">Inscrivez-vous</router-link> !
                         </div>

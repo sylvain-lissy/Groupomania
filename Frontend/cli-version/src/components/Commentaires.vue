@@ -6,6 +6,33 @@
                     <router-link to="/messages" class="my-2 btn btn-sm btn-block btn-danger">...retour aux messages</router-link>                
                 </div>
                 <div class="col-12 col-md-10 col-lg-8" id="OneMessage">
+                    <!-- VOICI UN MESSAGE -->
+                    <div class="card bg-light my-3">
+                        <div class="card-header bg-light d-flex align-items-center justify-content-between m-0 p-1">
+                            <div>
+                                <img :src="oneMessage.avatar" height="40" class="m-0 rounded-circle"/>
+                                <span class="small text-dark m-0 p-1">
+                                    Posté par {{oneMessage.userName}}
+                                    <span v-if="!oneMessage.isActive" class="small text-danger">(supprimé)</span>, 
+                                    le {{oneMessage.createdAt}}
+                                </span>
+                            </div>
+                            <div :id="'adus' + oneMessage.id" v-if="oneMessage.userId == this.currentUserId || this.isAdmin == 'true'">
+                                <a :href="'#/message/edit/' + oneMessage.id"><img src="/images/edit.svg" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
+                                <a :href="'#/message/drop/' + oneMessage.id"><img src="/images/drop.svg" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>
+                            </div>                               
+                        </div>
+                        <div class="card-body text-dark text-left" :id="'MessageContainer' + oneMessage.id">
+                        <p class="small" v-if="oneMessage.message !== ''"> {{oneMessage.message}} </p>
+                            <img class="w-100" :src="oneMessage.messageUrl" v-if="oneMessage.messageUrl !== ''">
+                        </div>
+                        <div class="card-footer bg-light text-dark text-left m-0">
+                            <p class="h6 small" v-if="oneMessage.commentaire === 0">Il n'y a aucun commentaire.</p>
+                            <p class="h6 small" v-if="oneMessage.commentaire === 1">Il y a 1 commentaire.</p>
+                            <p class="h6 small" v-if="oneMessage.commentaire > 1">Il y a {{oneMessage.commentaire}} commentaires.</p>
+                        </div>
+                    </div>
+                    <!-- FIN DU MESSAGE -->
                 </div>
                 <div class="col-12 col-md-10 col-lg-8">
                     <a href="" data-toggle="modal" data-target="#modalAddComment" class="my-2 btn btn-sm btn-block btn-success">Poster un commentaire...</a>
@@ -34,7 +61,24 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 col-md-10 col-lg-8" id="Comments">
+                <div class="col-12 col-md-10 col-lg-8">
+                    <div v-for="comment in comments" :key="comment.id" class="card bg-light my-3">
+                        <div class="card-header align-items-center m-0 p-1">
+                            <div class="d-flex justify-content-between">
+                                <span class="small text-dark m-0 p-1">
+                                    Commentaire de {{comment.User.userName}} 
+                                    <span v-if="!comment.User.isActive" class="small text-danger">(supprimé)</span>, 
+                                    le {{comment.createdAt.slice(0,10).split('-').reverse().join('/')}}
+                                </span>
+                                <div :id="'adcom' + comment.id"  v-if="comment.UserId == this.currentUserId || this.isAdmin == 'true'">
+                                    <a :href="'#/commentaire/edit/' + comment.id"><img src="/images/edit.svg" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
+                                    <a :href="'#/commentaire/drop/' + comment.id"><img src="/images/drop.svg" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>
+                                </div>
+                            </div>
+                            <hr class="m-0 p-0 bg-secondary">
+                            <p class="small text-dark m-0 p-1"> {{comment.comment}}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -43,17 +87,19 @@
 
 <script>
 import axios from "axios"
-import router from "../router"
 import Swal from "sweetalert2"
 
 export default {
-    name: "Messages",
+    name: "Commentaires",
     data() {
         return {
             newComment: null,
             currentUserId: "",
             submitted: false,
-            isActive: ""
+            isAdmin: false,
+            isActive: true,
+            oneMessage: [],
+            comments: [],
         }
     },
     methods: {
@@ -90,72 +136,12 @@ export default {
         }
     },
     created: function () {
+        this.isAdmin = localStorage.getItem("role")
         this.currentUserId = localStorage.getItem("userId")
         axios.get("http://127.0.0.1:3000/api/messages/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
         .then(res => {
-            const rep = res.data
-            const MessagesByCard = document.getElementById("OneMessage")
-            const OneMessage = document.createElement("div")
-            OneMessage.classList.add("card", "bg-light", "my-3")
-            if (rep.isActive === false) {
-                this.isActive = "<span class='text-danger small'> (supprimé)</span>"
-            } else {
-                this.isActive = ""
-            }
-            OneMessage.innerHTML=
-                `<div class="card-header bg-light d-flex align-items-center justify-content-between m-0 p-1">
-                    <div>
-                        <img src="${rep.avatar}" height="40" class="m-0 rounded-circle"/>
-                        <span class="small text-dark m-0 p-1">Posté par ${rep.userName} ${this.isActive}, le ${rep.createdAt.slice(0,10).split('-').reverse().join('/') + ' à ' + rep.createdAt.slice(11,16)}</span>
-                    </div>
-                    <div id="adus${rep.id}"></div>
-                </div>
-                <div class="card-body text-dark text-left" id="MessageContainer">
-                </div>
-                <div class="card-footer bg-light text-dark text-left m-0" id="Commentaire">
-                </div>`
-            MessagesByCard.appendChild(OneMessage)
-            if (!rep.message == null || !rep.message == "") {
-                const MessageTexte = document.getElementById("MessageContainer")
-                const TextContainer = document.createElement("p")
-                TextContainer.classList.add("small")
-                TextContainer.innerHTML= `${rep.message}`
-                MessageTexte.appendChild(TextContainer)
-            }
-            if (!rep.messageUrl == null || !rep.messageUrl == "") {
-                const MessageImage = document.getElementById("MessageContainer")
-                const ImageContainer = document.createElement("img")
-                ImageContainer.classList.add("w-100")
-                ImageContainer.setAttribute("src", `${rep.messageUrl}`)
-                MessageImage.appendChild(ImageContainer)
-            }
-            if (rep.userId == localStorage.getItem("userId") || localStorage.getItem("role") == "true") {
-                const showAdminPost = document.getElementById("adus"+`${rep.id}`)
-                const addAdminPanel = document.createElement("div")
-                addAdminPanel.innerHTML = `
-                    <a href="#/message/edit/${rep.id}"><img src="../images/edit.svg" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
-                    <a href="#/message/drop/${rep.id}"><img src="../images/drop.svg" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>`
-                showAdminPost.appendChild(addAdminPanel)
-            }
-            if (rep.commentaire === 0){
-                const MessageCommentaire = document.getElementById("Commentaire")
-                const CommentaireContainer = document.createElement("p")
-                CommentaireContainer.classList.add("h6", "small")
-                CommentaireContainer.innerHTML= `Il n'y a aucun commentaire.`
-                MessageCommentaire.appendChild(CommentaireContainer)
-            } else if (rep.commentaire === 1) {
-                const MessageCommentaire = document.getElementById("Commentaire")
-                const CommentaireContainer = document.createElement("p")
-                CommentaireContainer.classList.add("h6", "small")
-                CommentaireContainer.innerHTML= `Il y a ${rep.commentaire} commentaire.`
-                MessageCommentaire.appendChild(CommentaireContainer)
-            } else if (rep.commentaire > 1) {
-                const MessageCommentaire = document.getElementById("Commentaire")
-                const CommentaireContainer = document.createElement("p")
-                CommentaireContainer.classList.add("h6", "small")
-                CommentaireContainer.innerHTML= `Il y a ${rep.commentaire} commentaires.`
-                MessageCommentaire.appendChild(CommentaireContainer)
-            } 
+            this.oneMessage = res.data
+            this.oneMessage.createdAt = res.data.createdAt.slice(0,10).split('-').reverse().join('/') + ' à ' + res.data.createdAt.slice(11,16)
         })
         .catch((error)=> {
             const codeError = error.message.split("code ")[1]
@@ -172,40 +158,12 @@ export default {
                 timer: 3500,
                 showConfirmButton: false,
                 timerProgressBar: true,
-                willClose: () => { router.push("/messages") }
+                willClose: () => { this.$route.push("/messages") }
             })  
         })
         axios.get("http://127.0.0.1:3000/api/comments/messages/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
         .then(cmt => {
-            const Comment = cmt.data
-            for (const i in Comment) {
-                const CommentsByCard = document.getElementById("Comments")
-                const OneComment = document.createElement("div")
-                OneComment.classList.add("card", "bg-light", "my-3")
-                if (Comment[i].User.isActive === false) {
-                    this.isActive = "<span class='text-danger small'> (supprimé)</span>"
-                }else{
-                    this.isActive = ""
-                }
-                OneComment.innerHTML=
-                    `<div class="card-header align-items-center m-0 p-1">
-                        <div class="d-flex justify-content-between">
-                            <span class="small text-dark m-0 p-1">Commentaire de ${Comment[i].User.userName} ${this.isActive}, le ${Comment[i].createdAt.slice(0,10).split('-').reverse().join('/')}</span>
-                            <div id="adcom${Comment[i].id}"></div>
-                        </div>
-                        <hr class="m-0 p-0 bg-secondary">
-                        <p class="small text-dark m-0 p-1">${Comment[i].comment}</p>
-                    </div>`
-                CommentsByCard.appendChild(OneComment)
-                if (Comment[i].UserId == localStorage.getItem("userId") || localStorage.getItem("role") == "true" ) {
-                    const showAdminComment = document.getElementById("adcom"+`${Comment[i].id}`)
-                    const addAdminPanel = document.createElement("div")
-                    addAdminPanel.innerHTML = `
-                        <a href="#/commentaire/edit/${Comment[i].id}"><img src="../images/edit.svg" class="m-1 p-0" alt="Editer le message" title="Editer le message"/></a>
-                        <a href="#/commentaire/drop/${Comment[i].id}"><img src="../images/drop.svg" class="m-1 p-0" alt="Supprimer le message" title="Supprimer le message"/></a>`
-                    showAdminComment.appendChild(addAdminPanel)
-                }
-            }
+            this.comments = cmt.data
         })
         .catch(function(error) {
             const codeError = error.message.split("code ")[1]
@@ -221,7 +179,7 @@ export default {
                 timer: 3500,
                 showConfirmButton: false,
                 timerProgressBar: true,
-                willClose: () => { router.push("/messages") }
+                willClose: () => { this.$route.push("/messages") }
             })  
         })
     }

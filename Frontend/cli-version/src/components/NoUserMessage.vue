@@ -1,5 +1,5 @@
 <template>
-    <div class="card bg-light">
+    <div class="card bg-light mt-3">
         <div class="card-body d-flex flex-column flex-md-row justify-content-center align-items-center p-1 m-1">
             <div class="col-12 col-md-3 text-center">
                 <img src="/images/sad.svg" width="100" height="100">
