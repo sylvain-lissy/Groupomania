@@ -97,13 +97,16 @@ export default {
     beforeMount () {
         axios.get("http://127.0.0.1:3000/api/messages/" + this.$route.params.id, { headers: {"Authorization": "Bearer " + localStorage.getItem("token")} })
         .then(res => {
-            this.editUserId = res.data.userID
+            this.editUserId = res.data.userId
+            console.log(res)
             if (this.editUserId == localStorage.getItem("userId"))  {
                 this.editorTag = "( Utilisateur : " + res.data.userName + " )"
-                this.editMessage = res.data.text
+                this.editMessage = res.data.message
+                this.newImage = res.data.messageUrl
             } else if ( localStorage.getItem("role") == "true") {
                 this.editorTag = "( Administrateur : " + localStorage.getItem("userName") + " )"
-                this.editMessage = res.data.text
+                this.editMessage = res.data.message
+                this.newImage = res.data.messageUrl
                 this.editorColor = "text-danger"
             } else {
                 Swal.fire({

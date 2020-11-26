@@ -3,12 +3,12 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8">
-                    <router-link to="/messages" class="my-2 btn btn-small btn-block btn-danger">...retour aux messages</router-link>                
+                    <router-link to="/messages" class="my-2 btn btn-sm btn-block btn-danger">...retour aux messages</router-link>                
                 </div>
                 <div class="col-12 col-md-10 col-lg-8" id="OneMessage">
                 </div>
                 <div class="col-12 col-md-10 col-lg-8">
-                    <a  href="" data-toggle="modal" data-target="#modalAddComment" class="my-2 btn btn-small btn-block btn-success">Poster un commentaire...</a>
+                    <a href="" data-toggle="modal" data-target="#modalAddComment" class="my-2 btn btn-sm btn-block btn-success">Poster un commentaire...</a>
                     <div class="modal fade" id="modalAddComment" tabindex="-1" aria-labelledby="modalAddComment" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -104,8 +104,10 @@ export default {
             }
             OneMessage.innerHTML=
                 `<div class="card-header bg-light d-flex align-items-center justify-content-between m-0 p-1">
-                    <img src="${rep.avatar}" height="40" class="m-0 rounded-circle"/>
-                    <span class="small text-dark m-0 p-1">Posté par ${rep.userName} ${this.isActive}, le ${rep.createdAt.slice(0,10).split('-').reverse().join('/') + ' à ' + rep.createdAt.slice(11,16)}</span>
+                    <div>
+                        <img src="${rep.avatar}" height="40" class="m-0 rounded-circle"/>
+                        <span class="small text-dark m-0 p-1">Posté par ${rep.userName} ${this.isActive}, le ${rep.createdAt.slice(0,10).split('-').reverse().join('/') + ' à ' + rep.createdAt.slice(11,16)}</span>
+                    </div>
                     <div id="adus${rep.id}"></div>
                 </div>
                 <div class="card-body text-dark text-left" id="MessageContainer">

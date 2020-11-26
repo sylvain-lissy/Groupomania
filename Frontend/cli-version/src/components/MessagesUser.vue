@@ -3,6 +3,10 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-12 col-md-10 col-lg-8" id="allMessages">
+                    <div class="row">
+                        <div class="col-6 pr-1"><a href="#/messages" class="btn btn-sm btn-block btn-success">...retour aux messages</a></div>
+                        <div class="col-6 pl-1"><a href="#/compte" class="btn btn-sm btn-block btn-primary">retour à mon compte...</a></div>
+                    </div>
                     <noUserMessage v-if="noUserMessage"></noUserMessage>
                 </div>
             </div>
