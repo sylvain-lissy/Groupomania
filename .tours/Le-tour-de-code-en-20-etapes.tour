@@ -1,0 +1,135 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Le tour du code en 20 étapes",
+  "steps": [
+    {
+      "title": "Introduction",
+      "description": "Voici une présentation rapide du code de l'application pour le réseau social interne de Groupomania."
+    },
+    {
+      "title": "[API] Server.js",
+      "file": "Backend/server.js",
+      "line": 1,
+      "description": "1er étape on crée un serveur Node.js qui tournera sur le protocole HTTP et le port 3000.\r\nQuand le site sera en ligne, il faudra utilisé HTTPS pour le sécurisé avec un certifat SSL."
+    },
+    {
+      "title": "[API] app.js",
+      "file": "Backend/app.js",
+      "line": 1,
+      "description": "App.js est la racine de notre APi : Accès aux images, aux routes , aux import des modules npm, aux plugins externes necessaires."
+    },
+    {
+      "title": "[API] Routes 2/2",
+      "file": "Backend/routes/message.js",
+      "line": 13,
+      "description": "Voici les routes pour les fonctions de messages."
+    },
+    {
+      "title": "[API] Base de données 1/2",
+      "file": "Backend/models/index.js",
+      "line": 1,
+      "description": "Voici le modules de connexion à la base de données."
+    },
+    {
+      "title": "[API] Base de données 2/2",
+      "file": "Backend/models/user.js",
+      "line": 1,
+      "description": "Le modèle définit ici permet de savoir quelles sont les informations nécessaires pour créer un utilisateur."
+    },
+    {
+      "title": "[API] Middleware Multer",
+      "file": "Backend/middleware/multer-config.js",
+      "line": 1,
+      "description": "Ce module permet de gérer et stocker les images qui seront envoyé par les utilisateurs."
+    },
+    {
+      "title": "[API] Middleware Auth",
+      "file": "Backend/middleware/auth.js",
+      "line": 1,
+      "description": "Ici, nous vérifions que l'utilisateur est bien connecté pour authentifier toutes les réquetes qu'il fera."
+    },
+    {
+      "title": "[API] Controllers",
+      "file": "Backend/controllers/auth.js",
+      "line": 1,
+      "description": "Les contrôleurs permettent de définir les fonctions de chaques routes."
+    },
+    {
+      "title": "[VUE] Racine de l'application",
+      "file": "Frontend/cli-version/src/main.js",
+      "line": 1,
+      "description": "Ce fichier est la base de noter application.\r\nIl permet de faire le lien entre la vue ,les modèles et les composants."
+    },
+    {
+      "title": "[VUE] Centralisation dans App.vue",
+      "file": "Frontend/cli-version/src/App.vue",
+      "line": 1,
+      "description": "App.vue est le fichier centraliseur de notre application.\r\nIl englobe tous les composants et permet de restituer le code HTML, CSS et JS."
+    },
+    {
+      "title": "[VUE] Routeur",
+      "file": "Frontend/cli-version/src/router/index.js",
+      "line": 1,
+      "description": "L'index du routeur va nous permettre les accès vers les différents composants de notre application."
+    },
+    {
+      "title": "[VUE] Requête avec Axios",
+      "file": "Frontend/cli-version/src/components/Messages.vue",
+      "line": 144,
+      "description": "Axios est un module qui permet de faire des requêtes HTTP à notre APi.\r\nSweetAlert permet de gérer visuellement les états de ces requêtes."
+    },
+    {
+      "title": "[VUE] Redistribution avec Vue",
+      "file": "Frontend/cli-version/src/components/Messages.vue",
+      "line": 64,
+      "description": "Les éléments récupérer sous forme de tableau sont transmis aux HTML."
+    },
+    {
+      "title": "[VUE] Axios et SweetAlert",
+      "file": "Frontend/cli-version/src/components/Messages.vue",
+      "description": "Cette fonction est celle qui permet d'ajouter un nouveau message.\r\nLes données seront transmise à l'APi qui les traitera.",
+      "line": 99
+    },
+    {
+      "title": "[VUE] Accueil",
+      "file": "Frontend/cli-version/src/components/Accueil.vue",
+      "line": 1,
+      "description": "Voici la page d'accueil."
+    },
+    {
+      "title": "[VUE] Aide",
+      "file": "Frontend/cli-version/src/components/Aide.vue",
+      "line": 1,
+      "description": "Le composant ci-dessus permet d'afficher la page d'aide qui est disponible à tout le monde."
+    },
+    {
+      "title": "[VUE] Inscription",
+      "file": "Frontend/cli-version/src/components/Inscription.vue",
+      "line": 62,
+      "description": "Ici nous traîtons l'inscription d'un utilisateur via le formulaire en utilisant Axios."
+    },
+    {
+      "title": "[VUE] Connexion",
+      "file": "Frontend/cli-version/src/components/Connexion.vue",
+      "line": 53,
+      "description": "De la même manière, nous connectons un utilisateur."
+    },
+    {
+      "title": "[VUE] Mon compte",
+      "file": "Frontend/cli-version/src/components/Compte.vue",
+      "line": 193,
+      "description": "Là, nous récupérons les informations d'un utilisateur pour qu'il puisse accéder à son profil.",
+      "selection": {
+        "start": {
+          "line": 147,
+          "character": 69
+        },
+        "end": {
+          "line": 147,
+          "character": 70
+        }
+      }
+    }
+  ],
+  "isPrimary": true
+}
