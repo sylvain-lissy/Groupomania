@@ -10,7 +10,7 @@ exports.findOneUser = (req, res, next) => {
     .then(user => {
         userInfo.userName = user.userName
         userInfo.email = user.email
-        if (user.isAdmin === 1) {
+        if (user.isAdmin == false) {
           userInfo.role = "Utilisateur"
         } else {
           userInfo.role = "Administrateur"
