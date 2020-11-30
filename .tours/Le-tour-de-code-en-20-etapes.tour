@@ -19,7 +19,7 @@
       "description": "App.js est la racine de notre APi : Accès aux images, aux routes , aux import des modules npm, aux plugins externes necessaires."
     },
     {
-      "title": "[API] Routes 2/2",
+      "title": "[API] Routes",
       "file": "Backend/routes/message.js",
       "line": 13,
       "description": "Voici les routes pour les fonctions de messages."
